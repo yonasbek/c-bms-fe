@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,40 +10,46 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React, {  } from "react";
+import React from "react";
 import { SignIn } from "@/lib/actions";
 import axios from "axios";
+import { publicRequest } from "@/lib/requests";
+import { signIn } from "@/auth";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/authhhhhhhhhhhhhhh/logiiiiiiiiiin",
-        {
-          email: 'qmesfin@gmail.com',
-          password: '123456',
-        },
-        
-      );
-      console.log(response)
-      // Assuming your backend returns the user object in the response data
-    } catch (error) {
-      console.error("Login failed:", error);
-      throw new Error("Invalid credentials.");
-    }
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    signIn("credentials", {
+      email,
+      password,
+      redirect: true,
+      redirectTo: "/",
+    });
+
+    // try {
+
+    //   console.log(email, password)
+    //   const r = await publicRequest.post('/auth/login', {
+    //     email,
+    //     password
+    //   }
+    //   )
+    //   console.log(r)
+
+    // } catch (error) {
+    //   console.error("Login failed:", error);
+    //   throw new Error("Invalid credentials.");
+    // }
     // const result = await SignIn(email, password);
-  
+
     // console.log(result);
   };
-  
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -55,9 +61,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-           onSubmit={handleSubmit}
-          >
+          <form action={()=>SignIn(email, password)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -65,8 +69,8 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  // value={email} // new controlled prop
-                  // onChange={(e) => setEmail(e.target.value)} // new handler
+                  value={email} // new controlled prop
+                  onChange={(e) => setEmail(e.target.value)} // new handler
                   required
                 />
               </div>
@@ -83,8 +87,8 @@ export function LoginForm({
                 <Input
                   id="password"
                   type="password"
-                  // value={password} // new controlled prop
-                  // onChange={(e) => setPassword(e.target.value)} // new handler
+                  value={password} // new controlled prop
+                  onChange={(e) => setPassword(e.target.value)} // new handler
                   required
                 />
               </div>

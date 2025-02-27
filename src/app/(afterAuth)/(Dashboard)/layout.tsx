@@ -16,6 +16,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { useBuildingStore } from '@/store/buildings'
+import { SessionProvider } from 'next-auth/react'
 
 const Layout = ({children}:{children:React.ReactNode}) => {
   // const {buildings,activeBuilding} = useBuildingStore();
@@ -25,6 +26,8 @@ const Layout = ({children}:{children:React.ReactNode}) => {
   //   }
   // }
   return (
+    <SessionProvider>
+
     <SidebarProvider>
     <AppSidebar />
     <SidebarInset>
@@ -53,6 +56,7 @@ const Layout = ({children}:{children:React.ReactNode}) => {
       </div>
     </SidebarInset>
   </SidebarProvider>
+    </SessionProvider>
   )
 }
 

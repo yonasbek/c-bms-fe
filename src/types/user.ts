@@ -2,9 +2,7 @@ export interface User {
     id: string;
     name: string;
     email: string;
-    password: string;
-    type: string;
+    role: string;
     phoneNumber: string;
-    createdAt: Date;
-    updatedAt: Date;
+    access_token: string;
 }

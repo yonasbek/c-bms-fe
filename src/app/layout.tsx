@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { useModalStore } from "@/store/modal";
 import CustomModal from "@/components/custom-modal";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,5 +37,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-  );
+  );  
 }

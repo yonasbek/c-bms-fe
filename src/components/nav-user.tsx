@@ -1,5 +1,5 @@
 "use client"
-
+import { useSession } from "next-auth/react";
 import {
   BadgeCheck,
   Bell,
@@ -29,8 +29,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { auth } from "@/auth"
 
-export function NavUser({
+export const   NavUser = ({
   user,
 }: {
   user: {
@@ -38,8 +39,11 @@ export function NavUser({
     email: string
     avatar: string
   }
-}) {
-  const { isMobile } = useSidebar()
+}) => {
+  const { isMobile } = useSidebar();
+  const { data,status,update } = useSession();
+  console.log('this is form nav user',status)
+  // get access token from local storage
 
   return (
     <SidebarMenu>
