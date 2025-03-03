@@ -13,8 +13,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { buildings__ } from "@/sampleData/buildingsData"
 import { userData__ } from "@/sampleData/userData"
+import { useGetBuildings } from "@/store/server/buildings"
+import { useBuildingStore } from "@/store/buildings"
 
 // This is sample data.
 const items = [
@@ -24,8 +25,8 @@ const items = [
     icon: Home,
   },
   {
-    title: "Buildings",
-    href: "/buildings",
+    title: "Building",
+    href: "/building",
     icon: Building2,
   },
   {
@@ -66,10 +67,27 @@ const items = [
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  return (
+  const { data: BD, isLoading, error,  } = useGetBuildings();
+  const {setBuildings,buildings} = useBuildingStore();
+  React.useEffect(() => {
+    if (BD) {
+      setBuildings(BD);
+    }
+  }, [BD, setBuildings]);
+  if(error){
+    return <div>Error fetching buildings</div>
+  }
+  if(isLoading){
+    return <div>Loading...</div>
+  }
+
+ 
+
+  
+return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <BuildingSwitcher  />
+        <BuildingSwitcher buildings={buildings} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={items} />

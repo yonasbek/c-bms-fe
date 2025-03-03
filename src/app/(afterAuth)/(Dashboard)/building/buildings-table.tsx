@@ -54,7 +54,7 @@ export function BuildingsTable() {
           {buildings.map((building) => (
             <TableRow key={building.id}>
               <TableCell className="font-medium">
-                <Link href={`/buildings/${building.id}`} className="flex items-center gap-2 hover:underline">
+                <Link href={`/building/${building.id}`} className="flex items-center gap-2 hover:underline">
                   <Building className="h-4 w-4" />
                   {building.name}
                 </Link>

@@ -10,11 +10,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React from "react";
+import React, { useState } from "react";
 import { SignIn } from "@/lib/actions";
-import axios from "axios";
-import { publicRequest } from "@/lib/requests";
-import { signIn } from "@/auth";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -22,33 +20,31 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    signIn("credentials", {
-      email,
-      password,
-      redirect: true,
-      redirectTo: "/",
-    });
-
-    // try {
-
-    //   console.log(email, password)
-    //   const r = await publicRequest.post('/auth/login', {
-    //     email,
-    //     password
-    //   }
-    //   )
-    //   console.log(r)
-
-    // } catch (error) {
-    //   console.error("Login failed:", error);
-    //   throw new Error("Invalid credentials.");
-    // }
-    // const result = await SignIn(email, password);
-
-    // console.log(result);
+    setError(null);
+    setIsLoading(true);
+    
+    try {
+      const result = await SignIn(email, password);
+      
+      if (!result || result.error) {
+        setError("Invalid email or password. Please try again.");
+        return;
+      }
+      
+      // If we reach here, login was successful
+      router.push("/"); // or wherever you want to redirect after login
+    } catch (err) {
+      setError("An error occurred during login. Please try again.");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,7 +57,12 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={()=>SignIn(email, password)}>
+          {error && (
+            <div className="mb-4 p-3 text-sm text-red-500 bg-red-50 rounded-md border border-red-200">
+              {error}
+            </div>
+          )}
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -69,8 +70,9 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  value={email} // new controlled prop
-                  onChange={(e) => setEmail(e.target.value)} // new handler
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={error ? "border-red-500" : ""}
                   required
                 />
               </div>
@@ -87,13 +89,14 @@ export function LoginForm({
                 <Input
                   id="password"
                   type="password"
-                  value={password} // new controlled prop
-                  onChange={(e) => setPassword(e.target.value)} // new handler
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={error ? "border-red-500" : ""}
                   required
                 />
               </div>
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
               <Button variant="outline" className="w-full">
                 Login with Google

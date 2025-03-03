@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Building, Building2, ChevronsUpDown, Plus } from "lucide-react"
+import { Building2, ChevronsUpDown, Plus } from "lucide-react"
+import type { Building as BuildingType } from "@/types/building"
+import { useRouter } from "next/navigation"
 
 import {
   DropdownMenu,
@@ -9,7 +11,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -20,19 +21,30 @@ import {
 } from "@/components/ui/sidebar"
 import { useBuildingStore } from "@/store/buildings"
 import { useModalStore } from "@/store/modal"
-import { set } from "react-hook-form"
 
-export function BuildingSwitcher() {
+interface BuildingSwitcherProps {
+  buildings: BuildingType[];
+}
+
+export function BuildingSwitcher({ buildings }: BuildingSwitcherProps) {
+  const router = useRouter();
   const { isMobile } = useSidebar();
   // get active building from building zustand store
-  const {activeBuilding,buildings,setActiveBuilding} = useBuildingStore();
-  const {setName} = useModalStore();
+  const {activeBuilding,setActiveBuilding} = useBuildingStore();
+  
+
+  const {setModal} = useModalStore();
+
+  const handleBuildingSwitch = (buildingId: string) => {
+    setActiveBuilding(buildingId);
+    router.push(`/building/${buildingId}`);
+  };
 
   if(activeBuilding === null){
    
    if(buildings[0])
    {
-    setActiveBuilding(buildings[0].id);
+    handleBuildingSwitch(buildings[0].id);
    }
      
     }
@@ -70,21 +82,21 @@ export function BuildingSwitcher() {
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Buildings
             </DropdownMenuLabel>
-            {buildings.map((buildings, index) => (
+            {buildings.map((building, index) => (
               <DropdownMenuItem
-                key={buildings.name}
-                onClick={() => setActiveBuilding(buildings.id)}
+                key={building.name + index}
+                onClick={() => handleBuildingSwitch(building.id)}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <Building className="size-4 shrink-0" />
+                  <Building2 className="size-4 shrink-0" />
                 </div>
-                {buildings.name}
+                {building.name}
 
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2 cursor-pointer" onClick={()=>setName('create-building')}>
+            <DropdownMenuItem className="gap-2 p-2 cursor-pointer" onClick={()=>setModal({name:'create-building',isOpen:true})}>
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Plus className="size-4"  />
               </div>

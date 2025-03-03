@@ -1,8 +1,6 @@
-import { JWT } from 'next-auth/jwt';
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { publicRequest } from "./lib/requests";
-import bcrypt from "bcryptjs";
 import { User } from "./types/user";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -18,43 +16,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorize: async (credentials) => {
         let user: User | null = null;
 
-        try{
+        try {
           const r = await publicRequest.post('/auth/login', {
-                  email:credentials.email,
-                  password:credentials.password
-                });
-                // console.log(r.data)
-             user= r.data.access_token ?{
-              id:'01',
-              name:'Tinsaee',
-              email:'email@email.com',
-              role:'manager',
-              phoneNumber:'0123456789',
-              access_token:r.data.access_token
-            }:null
-
-              }
-        catch (error) {
-          // console.error("Login failed:", error);
-          throw new Error("Invalid credentials.");
+            email: credentials.email,
+            password: credentials.password
+          });
+          console.log(r.data)
+          user = r.data.access_token ? {
+            id: r.data.id,
+            name: r.data.name,
+            email: r.data.email,
+            role: r.data.role,
+            phoneNumber: r.data.phone,
+            access_token: r.data.access_token
+          } : null
+        }
+        catch (error: unknown) {
+          // Instead of throwing errors, return null
+          console.error("Login error:", error);
+          return null;
         }
         
-        // logic to salt and hash password
-        // const pwHash = await bcrypt.hash(credentials.password as string, 10);
-        // logic to verify if the user exists
-        // user = await publicRequest.post("/auth/login",  {
-        //   email: credentials.email,
-        //   password: credentials.password,
-        // });
-// console.log(credentials)
-       
-
+        // If no user was found, return null instead of throwing an error
         if (!user) {
-          // No user found, so this is their first attempt to login
-          // Optionally, this is also the place you could do a user registration
-          throw new Error("Invalid credentials.");
+          return null;
         }
-        // return user object with their profile data
+        
         return user;
       },
     }),
@@ -71,7 +58,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.phoneNumber = token.phoneNumber as string;
         session.user.access_token = token.access_token as string;
       }
-      console.log("From Session Callback", session);
+      // console.log("From Session Callback", session);
       return session;
 
       //   console.log("From Session Callback", user);
@@ -95,9 +82,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return token;
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async redirect({ url, baseUrl }) {
-      // Always redirect to the baseUrl (home page)
-      return baseUrl;
+      // Handle any redirects
+      return  baseUrl;
     },
     
   },
@@ -105,5 +93,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   
   pages: {
     signIn: "/auth/login",
+    // Add an error page to handle displaying errors in your login form
+    error: "/auth/login", 
   },
 });

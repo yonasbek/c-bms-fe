@@ -1,5 +1,4 @@
 // store/buildings.ts
-import { nanoid } from 'nanoid';
 import { create } from 'zustand';
 
 export interface Modal {
@@ -7,32 +6,27 @@ export interface Modal {
   
   isOpen: boolean;
   name: string;
-  
+  forceOpen?: boolean;
 }
 
-interface ModalStore {
-    modal: Modal;
+interface ModalState {
+  modal: Modal;
+  setModal: (modal: Modal) => void;
   setIsOpen: (isOpen: boolean) => void;
-    setName: (name: string) => void;
-  
 }
 
-
-
-export const useModalStore = create<ModalStore>((set, get) => ({
-    modal: {
-        isOpen: false,
-        name: '',
-    },
-    setIsOpen: (isOpen: boolean) => {
-        set((state) => ({
-        modal: { ...state.modal, isOpen },
-        }));
-    },
-    setName: (name: string) => {
-        set((state) => ({
-        modal: { isOpen:true, name },
-        }));
-    },
- 
+export const useModalStore = create<ModalState>((set) => ({
+  modal: {
+    name: '',
+    isOpen: false,
+    forceOpen: false,
+  },
+  setModal: (modal) => set({ modal }),
+  setIsOpen: (isOpen) => set((state) => {
+    // Only allow closing if not forced open
+    if (state.modal.forceOpen && !isOpen) {
+      return state;
+    }
+    return { modal: { ...state.modal, isOpen } };
+  }),
 }));

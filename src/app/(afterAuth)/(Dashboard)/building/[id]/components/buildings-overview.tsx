@@ -1,7 +1,19 @@
+import GlobalLoading from "@/components/global-loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useBuildingStore } from "@/store/buildings";
+import { useGetFloorsForBuilding } from "@/store/server/floor";
 import { Building2, Users, Home, AlertCircle } from "lucide-react"
 
 export function BuildingOverview() {
+  const {activeBuilding} = useBuildingStore();
+  const {data,isLoading} = useGetFloorsForBuilding(activeBuilding?.id);
+  const floors = data?.data;
+
+  const totalFloors = floors?.length ||0;
+
+  if(isLoading){
+return <GlobalLoading title="Floors"/>
+  }
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
@@ -10,8 +22,8 @@ export function BuildingOverview() {
           <Building2 className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">12</div>
-          <p className="text-xs text-muted-foreground">48 Total Units</p>
+          <div className="text-2xl font-bold">{totalFloors}</div>
+          {/* <p className="text-xs text-muted-foreground"> Total Floors</p> */}
         </CardContent>
       </Card>
       <Card>

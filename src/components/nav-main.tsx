@@ -1,21 +1,13 @@
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import {type LucideIcon } from "lucide-react"
+
 
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
+
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { Button } from "./ui/button"
@@ -43,7 +35,7 @@ export function NavMain({
         const Icon = item.icon
         return (
           <Link key={item.href} href={item.href}>
-            <Button variant={pathname === item.href ? "secondary" : "ghost"} className="w-full justify-start">
+            <Button variant={pathname.startsWith(item.href) ? "secondary" : "ghost"} className="w-full justify-start">
               <Icon className="mr-2 h-4 w-4" />
               {item.title}
             </Button>
