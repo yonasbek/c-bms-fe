@@ -29,6 +29,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { use } from 'react';
 
 export const   NavUser = ({
   user,
@@ -41,7 +42,6 @@ export const   NavUser = ({
 }) => {
   const { isMobile } = useSidebar();
   const { data,status,update } = useSession();
-  console.log('this is form nav user',status)
   // get access token from local storage
 
   return (
@@ -114,4 +114,13 @@ export const   NavUser = ({
       </SidebarMenuItem>
     </SidebarMenu>
   )
+}
+
+export default async function BuildingDetailsPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}) {
+  const resolvedParams = await params;
+  return <BuildingDetails id={resolvedParams.id} />;
 }

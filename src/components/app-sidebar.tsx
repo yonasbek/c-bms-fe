@@ -13,9 +13,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { userData__ } from "@/sampleData/userData"
 import { useGetBuildings } from "@/store/server/buildings"
 import { useBuildingStore } from "@/store/buildings"
+import { useSession } from "next-auth/react"
 
 // This is sample data.
 const items = [
@@ -69,6 +69,7 @@ const items = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: BD, isLoading, error,  } = useGetBuildings();
   const {setBuildings,buildings} = useBuildingStore();
+  const {data:user} = useSession();
   React.useEffect(() => {
     if (BD) {
       setBuildings(BD);
@@ -93,7 +94,7 @@ return (
         <NavMain items={items} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={userData__} />
+        <NavUser user={{ name: user?.user?.name || "", email: user?.user?.email || "", avatar: user?.user?.image || "" }} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

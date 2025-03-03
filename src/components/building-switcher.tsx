@@ -4,6 +4,7 @@ import * as React from "react"
 import { Building2, ChevronsUpDown, Plus } from "lucide-react"
 import type { Building as BuildingType } from "@/types/building"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 import {
   DropdownMenu,
@@ -29,26 +30,20 @@ interface BuildingSwitcherProps {
 export function BuildingSwitcher({ buildings }: BuildingSwitcherProps) {
   const router = useRouter();
   const { isMobile } = useSidebar();
-  // get active building from building zustand store
-  const {activeBuilding,setActiveBuilding} = useBuildingStore();
-  
+  const { activeBuilding, setActiveBuilding } = useBuildingStore();
+  const { setModal } = useModalStore();
 
-  const {setModal} = useModalStore();
+  // Move the initialization logic to useEffect
+  useEffect(() => {
+    if (!activeBuilding && buildings.length > 0) {
+      handleBuildingSwitch(buildings[0].id);
+    }
+  }, [activeBuilding, buildings]);
 
   const handleBuildingSwitch = (buildingId: string) => {
     setActiveBuilding(buildingId);
     router.push(`/building/${buildingId}`);
   };
-
-  if(activeBuilding === null){
-   
-   if(buildings[0])
-   {
-    handleBuildingSwitch(buildings[0].id);
-   }
-     
-    }
-
 
   return (
     <SidebarMenu>

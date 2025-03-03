@@ -1,4 +1,6 @@
 'use client'
+
+import { use } from 'react';
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FloorsList } from "./components/floors-list"
@@ -9,16 +11,21 @@ import { TenantsList } from "./components/tenant-list"
 import GlobalLoading from "@/components/global-loading"
 import { AddFloorDialog } from "./components/add-floor-dialog"
 
-export default function BuildingDetailsPage({ params }: { params: { id: string } }) {
-//  here to load data from building
-    const {data:building,isError,isLoading} =useGetBuildingInfo(params.id);
+interface PageProps {
+  params: Promise<{ id: string }>
+}
 
-    if(isLoading){
-        return <GlobalLoading title="Building " />
-    }
-    if(isError){
-        return <div>Error loading building</div>
-    }
+export default function BuildingDetailsPage({ params }: PageProps) {
+  const resolvedParams = use(params);
+  const {data:building, isError, isLoading} = useGetBuildingInfo(resolvedParams.id);
+
+  if(isLoading){
+    return <GlobalLoading title="Building " />
+  }
+  if(isError){
+    return <div>Error loading building</div>
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

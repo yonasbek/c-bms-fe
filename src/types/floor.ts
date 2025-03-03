@@ -1,3 +1,5 @@
+import { RoomType } from "./room";
+
 export interface FloorType {
     id: string;
     name: string;
@@ -5,4 +7,8 @@ export interface FloorType {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface FloorWithRooms extends FloorType {
+    rooms: RoomType[];
+  }
 
