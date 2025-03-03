@@ -35,7 +35,6 @@ export default function BuildingDetailsPage({ params }: PageProps) {
         </div>
         <div className="flex items-center gap-4">
           <Button variant="outline">Edit Building</Button>
-          <Button>Add Floor</Button>
           <AddFloorDialog />
         </div>
       </div>

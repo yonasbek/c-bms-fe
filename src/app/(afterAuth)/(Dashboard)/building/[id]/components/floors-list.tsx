@@ -41,7 +41,7 @@ export function FloorsList() {
 const {activeBuilding} = useBuildingStore();
 
 // const {data,isLoading} = useGetFloorsForBuilding(activeBuilding?.id);
-const {data:floors,isLoading,isError,error} = useGetAllFloorsRoomsForBuilding(activeBuilding?.id);
+const {data:floors,isLoading } = useGetAllFloorsRoomsForBuilding(activeBuilding?.id);
 
 // const {data:rooms} = useGetRoomsForFloor(activeBuilding?.id);
 
@@ -53,7 +53,7 @@ if(isLoading){
   return (
     <div className="space-y-4">
       {floors.map((floor,index) => (
-        <FloorItem key={index} floor={floor} />
+        <FloorItem key={index+floor.id} floor={floor} />
       ))}
       <AddFloorDialog />
     </div>

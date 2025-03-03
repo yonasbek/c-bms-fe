@@ -17,13 +17,9 @@ const ModalContent = () => {
 
 const CustomModal = () => {
   const { modal, setIsOpen } = useModalStore();
-  const queryClient = useQueryClient();
   
   // Add this to log modal state changes
-  useEffect(() => {
-    console.log('Modal state changed:', modal);
-  }, [modal]);
-  
+
   return (
     <Dialog 
       open={modal.isOpen} 

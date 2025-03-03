@@ -12,9 +12,7 @@ export const useGetBuildings = () => {
   return useQuery<BuildingType[]>({
     queryKey: ['buildings'],
     queryFn: async () => {
-      console.log('Executing buildings query function');
       const response = await userRequest.get('/building');
-      console.log('Buildings API response:', response.data);
       return response.data;
     },
    

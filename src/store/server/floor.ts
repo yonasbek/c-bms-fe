@@ -44,7 +44,7 @@ export const useGetAllFloorsRoomsForBuilding = (buildingId: string) => {
   
   const roomQueries = useQueries({
     queries: floors.map((floor) => ({
-      queryKey: ['rooms', floor.id],
+      queryKey: ['roomsInFloor', floor.id],
       queryFn: () => userRequest.get<RoomType[]>(`/room/search/floorId/${floor.id}`),
     })),
   });
