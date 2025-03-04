@@ -15,6 +15,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useGetAllTenantUsersForABuilding } from "@/store/server/tenant-user"
+import { useBuildingStore } from "@/store/buildings"
+import GlobalLoading from "@/components/global-loading"
+import { AddTenantUserDialog } from "./add-tenant-user-dialog"
 
 type PaymentStatus = "paid" | "overdue" | "pending"
 type ContractStatus = "active" | "expiring" | "expired"
@@ -99,8 +103,17 @@ const contractStatusColors: Record<ContractStatus, string> = {
 
 export function TenantsList() {
   const [filter, setFilter] = useState<PaymentStatus | "all">("all")
+  const { activeBuilding } = useBuildingStore()
+  const { data: tenantsD, isLoading, error } = useGetAllTenantUsersForABuilding(activeBuilding?.id)
+  
 
-  const filteredTenants = tenants.filter((tenant) => filter === "all" || tenant.payment.status === filter)
+  // const filteredTenants = tenantsD?.data?.filter((tenant) => filter === "all" || tenant.payment.status === filter)
+
+
+  if(isLoading){
+    return <GlobalLoading title="Tenants"/>
+  }
+  console.log(tenantsD)
 
   return (
     <div className="space-y-6">
@@ -109,7 +122,7 @@ export function TenantsList() {
           <h2 className="text-2xl font-semibold tracking-tight">Current Tenants</h2>
           <p className="text-sm text-muted-foreground">Manage tenants and their contracts</p>
         </div>
-        <Button>Add New Tenant</Button>
+        <AddTenantUserDialog />
       </div>
 
       <div className="flex items-center gap-4">
@@ -125,30 +138,33 @@ export function TenantsList() {
           </SelectContent>
         </Select>
       </div>
-
-      <div className="grid gap-4">
-        {filteredTenants.map((tenant) => (
-          <Card key={tenant.id}>
+      {tenantsD?.length && tenantsD?.length > 0 ? (
+            <div className="grid gap-4">
+        {tenantsD?.map((tenant) => (
+          
+          <Card key={tenant.id} className={`${!tenant.contract ? "border-red-500" : ""}`}>
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-4">
                   <Avatar className="h-12 w-12">
-                    <AvatarImage src={tenant.avatarUrl} alt={tenant.name} />
-                    <AvatarFallback>{tenant.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={'tenant.user'} alt={tenant.user.name} />
+                    <AvatarFallback>{tenant.user.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
                     <CardTitle className="flex items-center gap-2">
-                      {tenant.name}
-                      <Badge variant="outline">Room {tenant.room}</Badge>
+                      {tenant.user.name}
+                       {tenant.contract?.room?.room_number && <Badge variant="outline">Room {tenant.contract?.room?.room_number}</Badge>}
+                       {!tenant.contract && <Badge variant="destructive">No Contract</Badge>}
                     </CardTitle>
                     <CardDescription className="mt-1 space-y-1">
                       <div className="flex items-center gap-2">
                         <User className="h-3 w-3" />
-                        {tenant.email}
+                        {tenant.user.email}
                       </div>
                       <div className="flex items-center gap-2">
                         <Home className="h-3 w-3" />
-                        {tenant.phone}
+
+                        {tenant.user.phone}
                       </div>
                     </CardDescription>
                   </div>
@@ -170,6 +186,7 @@ export function TenantsList() {
                 </DropdownMenu>
               </div>
             </CardHeader>
+            {tenant.contract &&(
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-3">
@@ -178,14 +195,20 @@ export function TenantsList() {
                       <FileText className="h-4 w-4" />
                       Contract Period
                     </span>
-                    <Badge variant="outline" className={contractStatusColors[tenant.contract.status]}>
-                      {tenant.contract.status.charAt(0).toUpperCase() + tenant.contract.status.slice(1)}
-                    </Badge>
+                    {tenant.contract ? (
+                      <Badge variant="outline" className={contractStatusColors[tenant.contract.contract_status as ContractStatus]}>
+                        {tenant.contract.contract_status.charAt(0).toUpperCase() + tenant.contract.contract_status.slice(1)}
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline">No active contract</Badge>
+                    )}
                   </div>
-                  <div className="text-sm">
-                    {new Date(tenant.contract.startDate).toLocaleDateString()} -{" "}
-                    {new Date(tenant.contract.endDate).toLocaleDateString()}
-                  </div>
+                  {tenant.contract && (
+                    <div className="text-sm">
+                      {new Date(tenant.contract.start_date).toLocaleDateString()} -{" "}
+                      {new Date(tenant.contract.end_date).toLocaleDateString()}
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -193,32 +216,38 @@ export function TenantsList() {
                       <DollarSign className="h-4 w-4" />
                       Payment Status
                     </span>
-                    <Badge className={paymentStatusColors[tenant.payment.status]}>
+                    {/* <Badge className={paymentStatusColors[tenant.payment.status]}>
                       {tenant.payment.status.charAt(0).toUpperCase() + tenant.payment.status.slice(1)}
-                    </Badge>
+                    </Badge> */}
                   </div>
                   <div className="space-y-1">
                     <div className="flex justify-between text-sm">
                       <span>Monthly Rent:</span>
-                      <span className="font-medium">${tenant.contract.monthlyRent}</span>
+                      <span className="font-medium">${tenant.contract?.monthly_rent}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Next Due Date:</span>
-                      <span>{new Date(tenant.payment.dueDate).toLocaleDateString()}</span>
+                      {/* <span>{new Date(tenant.payment.dueDate).toLocaleDateString()}</span> */}
                     </div>
-                    {tenant.payment.lastPaid && (
+                    {/* {tenant.payment.lastPaid && (
                       <div className="flex justify-between text-sm">
                         <span>Last Paid:</span>
                         <span>{new Date(tenant.payment.lastPaid).toLocaleDateString()}</span>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
             </CardContent>
+            )}
           </Card>
         ))}
       </div>
+      ) : (
+        <div className="flex items-center justify-center h-full">   
+          <p className="text-muted-foreground">No tenants found</p>
+        </div>
+      )}
     </div>
   )
 }

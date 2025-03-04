@@ -1,11 +1,20 @@
-type Contract ={
-    id:string;
-    startDate:Date;
-    endDate:Date;
-    status:string;
-    floorID:string;
-    paymentID:string;
-    paymentTerm:number;
-}
+import { RoomType } from "./room";
+import { TenantUser } from "./user";
 
-export default Contract;
+interface ContractType {
+    id: string;
+    userId: string;
+    start_date: string;
+    end_date: string;
+    is_active: boolean;
+    monthly_rent: number;
+    contract_status: string;
+    roomId: string;
+    room?:RoomType;
+    user?:TenantUser;
+    created_at:string;
+    modified_at:string;
+    // Add other contract fields as needed
+  }
+
+export default ContractType;

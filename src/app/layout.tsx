@@ -27,16 +27,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-        <CustomModal />
-        {children}
-        <Toaster position="top-right" />
+          <CustomModal />
+          {children}
+          <Toaster position="top-right" />
         </Providers>
-
       </body>
     </html>
-  );  
+  );
 }
