@@ -6,7 +6,7 @@ import { auth } from './auth';
 
 
 export const middleware = auth((req) => {
-  // console.log("from middleware");
+  console.log("from middleware");
   if (!req.auth && req.nextUrl.pathname !== "/auth/login") {
     const newUrl = new URL("/auth/login", req.nextUrl.origin);
     return Response.redirect(newUrl);
