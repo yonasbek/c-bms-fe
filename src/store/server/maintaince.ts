@@ -105,6 +105,30 @@ export const useGetRoomForBuilding = (buildingId: string) => {
   };
 };
 
+interface UpdateMaintenanceStatus {
+    id: string;
+    request_status?: string;
+}
+
+export const useUpdateMaintenance = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: UpdateMaintenanceStatus) => {
+      return userRequest.put<MaintenanceType>(`/maintenance/${data.id}`, {request_status: data.request_status});
+    },
+    onSuccess: (data) => {
+      console.log('Maintenance updated successfully', data);
+      toast.success("Maintenance updated successfully");
+      queryClient.invalidateQueries({ queryKey: ['maintenance'] });
+    },
+    onError: (error) => {
+      console.error('Maintenance update failed:', error);
+      toast.error("Failed to update maintenance");
+    }
+  });
+};
+
 
 
 

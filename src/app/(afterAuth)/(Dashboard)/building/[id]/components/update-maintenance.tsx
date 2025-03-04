@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-
+import { useUpdateMaintenance } from "@/store/server/maintaince"
 interface UpdateMaintenanceStatusProps {
   requestId: string
   currentStatus: string
@@ -19,11 +19,13 @@ export function UpdateMaintenanceStatus({ requestId, currentStatus, trigger }: U
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState(currentStatus)
   const [note, setNote] = useState("")
+  const { mutate: updateMaintenance, isPending } = useUpdateMaintenance();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle status update here
     console.log({ requestId, status, note })
+    updateMaintenance({id: requestId, request_status: status})
     setOpen(false)
   }
 
