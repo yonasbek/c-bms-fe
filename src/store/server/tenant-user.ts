@@ -9,7 +9,7 @@ import { AxiosError } from "axios";
 
 
 interface TenantWithContract extends BuildingUserType {
-  contract?: ContractType | null;
+  contracts: ContractType[];
 }
 
 export const useGetAllTenantUsersForABuilding = (buildingId: string) => {
@@ -36,7 +36,7 @@ export const useGetAllTenantUsersForABuilding = (buildingId: string) => {
   const tenantsWithContracts: TenantWithContract[] = 
     tenantsQuery.data?.data.map((tenant, index) => ({
       ...tenant,
-      contract: contractQueries[index]?.data?.data?.[0] || null, // Get the most recent contract
+      contracts: contractQueries[index]?.data?.data || [], // Get all contracts
     })) || [];
 
   return {
