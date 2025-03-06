@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Calendar, Clock, MoreVertical, AlertCircle } from "lucide-react"
+import { Calendar, Clock, MoreVertical } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,7 +16,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { UpdateMaintenanceStatus } from "./update-maintenance"
 import { cn } from "@/lib/utils"
-import { useGetAllMaintenanceForBuilding, useGetMaintenanceForBuilding } from "@/store/server/maintaince"
+import { useGetAllMaintenanceForBuilding } from "@/store/server/maintaince"
 import { useBuildingStore } from "@/store/buildings"
 import GlobalLoading from "@/components/global-loading"
 import { MaintenanceStatus, Priority } from "@/types/maintainance"
@@ -64,16 +64,21 @@ export function MaintenanceList() {
   }
 
   if(maintenance?.length === 0){
-    return <div className="text-center text-muted-foreground">No maintenance requests found</div>
+    return (
+    <div className="flex items-center justify-center h-full">
+          <AddMaintenanceDialog trigger={<Button onClick={() => setIsOpen(true)}>New Request</Button>} />
+    <div className="text-center text-muted-foreground">No maintenance requests found</div>
+    </div>
+    )
   }
 
   return (
     <div className="space-y-6">
-      <AddMaintenanceDialog trigger={<Button onClick={() => setIsOpen(true)}>New Request</Button>} />
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h2 className="text-2xl font-semibold tracking-tight">Maintenance Requests</h2>
           <p className="text-sm text-muted-foreground">Manage and track maintenance requests for this building</p>
+          <AddMaintenanceDialog trigger={<Button onClick={() => setIsOpen(true)}>New Request</Button>} />
         </div>
         {/* <Button onClick={() => setIsOpen(true)}>New Request</Button> */}
       </div>

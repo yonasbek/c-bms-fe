@@ -11,7 +11,7 @@ import { TenantsList } from "./components/(building-tabs)/(tenant-user)/tenant-l
 import GlobalLoading from "@/components/global-loading"
 import { AddFloorDialog } from "./components/(building-tabs)/(floors-room)/add-floor-dialog"
 import { ContractsList } from "./components/(building-tabs)/(contracts)/contracts-list"
-
+import {InventoryList} from "./components/(building-tabs)/(inventory)/inventory-list"
 interface PageProps {
   params: Promise<{ id: string }>
 }
@@ -64,6 +64,9 @@ export default function BuildingDetailsPage({ params }: PageProps) {
         </TabsContent>
         <TabsContent value="contracts">
           <ContractsList />
+        </TabsContent>
+        <TabsContent value="inventory">
+          <InventoryList />
         </TabsContent>
       </Tabs>
     </div>

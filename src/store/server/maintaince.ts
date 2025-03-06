@@ -1,5 +1,5 @@
 //mutiate floor create 
-import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { userRequest } from "@/lib/requests";
 import { toast } from "sonner";
 // import { FloorType, FloorWithRooms } from "@/types/floor";
