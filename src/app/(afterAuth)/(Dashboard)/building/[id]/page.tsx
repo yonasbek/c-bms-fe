@@ -11,6 +11,7 @@ import { TenantsList } from "./components/(building-tabs)/(tenant-user)/tenant-l
 import GlobalLoading from "@/components/global-loading"
 import { AddFloorDialog } from "./components/(building-tabs)/(floors-room)/add-floor-dialog"
 import { ContractsList } from "./components/(building-tabs)/(contracts)/contracts-list"
+import { PaymentsTab } from "./components/(building-tabs)/(payments)/payments-tab"
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -46,8 +47,8 @@ export default function BuildingDetailsPage({ params }: PageProps) {
           <TabsTrigger value="floors">Floors & Rooms</TabsTrigger>
           <TabsTrigger value="tenants">Tenant-Users</TabsTrigger>
           <TabsTrigger value="contracts">Contracts</TabsTrigger>
-          <TabsTrigger value="inventory">Inventory</TabsTrigger>
           <TabsTrigger value="payments">Payments</TabsTrigger>
+          <TabsTrigger value="inventory">Inventory</TabsTrigger>
           <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
@@ -64,6 +65,9 @@ export default function BuildingDetailsPage({ params }: PageProps) {
         </TabsContent>
         <TabsContent value="contracts">
           <ContractsList />
+        </TabsContent>
+        <TabsContent value="payments">
+          <PaymentsTab />
         </TabsContent>
       </Tabs>
     </div>
