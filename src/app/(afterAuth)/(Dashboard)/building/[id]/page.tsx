@@ -3,13 +3,14 @@
 import { use } from 'react';
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FloorsList } from "./components/floors-list"
-import { BuildingOverview } from "./components/buildings-overview"
+import { FloorsList } from "./components/(building-tabs)/(floors-room)/floors-list"
+import { BuildingOverview } from "./components/(building-tabs)/(building-overview)/buildings-overview"
 import { useGetBuildingInfo } from "@/store/server/buildings"
-import { MaintenanceList } from "./components/maintenance-list"
-import { TenantsList } from "./components/tenant-list"
+import { MaintenanceList } from "./components/(building-tabs)/(maintenance)/maintenance-list"
+import { TenantsList } from "./components/(building-tabs)/(tenant-user)/tenant-list"
 import GlobalLoading from "@/components/global-loading"
-import { AddFloorDialog } from "./components/add-floor-dialog"
+import { AddFloorDialog } from "./components/(building-tabs)/(floors-room)/add-floor-dialog"
+import { ContractsList } from "./components/(building-tabs)/(contracts)/contracts-list"
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -43,8 +44,11 @@ export default function BuildingDetailsPage({ params }: PageProps) {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="floors">Floors & Rooms</TabsTrigger>
+          <TabsTrigger value="tenants">Tenant-Users</TabsTrigger>
+          <TabsTrigger value="contracts">Contracts</TabsTrigger>
+          <TabsTrigger value="inventory">Inventory</TabsTrigger>
+          <TabsTrigger value="payments">Payments</TabsTrigger>
           <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
-          <TabsTrigger value="tenants">Tenants</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
           <BuildingOverview />
@@ -57,6 +61,9 @@ export default function BuildingDetailsPage({ params }: PageProps) {
         </TabsContent>
         <TabsContent value="tenants">
           <TenantsList />
+        </TabsContent>
+        <TabsContent value="contracts">
+          <ContractsList />
         </TabsContent>
       </Tabs>
     </div>

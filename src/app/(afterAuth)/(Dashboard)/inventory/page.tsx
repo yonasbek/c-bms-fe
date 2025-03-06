@@ -14,6 +14,20 @@ export default function InventoryPage() {
       </div>
       <div className="space-y-4">
         <InventoryList />
+
+        {/* <UploadButton
+          className="w-full bg-blue-500 text-white p-2 rounded-md"
+          endpoint="imageUploader"
+          onClientUploadComplete={(res) => {
+            // Do something with the response
+            console.log("Files: ", res);
+            alert("Upload Completed");
+          }}
+          onUploadError={(error: Error) => {
+            // Do something with the error.
+            alert(`ERROR! ${error.message}`);
+          }}
+        /> */}
       </div>
     </div>
   )

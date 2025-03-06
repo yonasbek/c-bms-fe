@@ -30,6 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             phoneNumber: r.data.phone,
             access_token: r.data.access_token
           } : null
+
         }
         catch (error: unknown) {
           // Instead of throwing errors, return null
@@ -58,6 +59,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.phoneNumber = token.phoneNumber as string;
         session.user.access_token = token.access_token as string;
       }
+      console.log('access token', session.user.access_token)
       // console.log("From Session Callback", session);
       return session;
 

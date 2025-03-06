@@ -4,4 +4,5 @@ export interface BuildingType {
   address: string;
   createdAt: string;
   updatedAt: string;
+  isActive: boolean;
 }
