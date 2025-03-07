@@ -39,7 +39,7 @@ export function InventoryList() {
         {inventory.map((item) => (
           <Card key={item.id}>
             <CardHeader>
-              <CardTitle>{item.name}</CardTitle>
+              <CardTitle>{item.item?.name}</CardTitle>
             </CardHeader>
             <CardContent>
               <p>Quantity: {item.quantity}</p>

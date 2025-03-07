@@ -13,7 +13,7 @@ import { AddFloorDialog } from "./components/(building-tabs)/(floors-room)/add-f
 import { ContractsList } from "./components/(building-tabs)/(contracts)/contracts-list"
 import {InventoryList} from "./components/(building-tabs)/(inventory)/inventory-list"
 import { PaymentsTab } from "./components/(building-tabs)/(payments)/payments-tab"
-
+import { SubContractList } from "./components/(building-tabs)/(sub-contract)/sub-contract-list"
 interface PageProps {
   params: Promise<{ id: string }>
 }
@@ -51,6 +51,7 @@ export default function BuildingDetailsPage({ params }: PageProps) {
           <TabsTrigger value="payments">Payments</TabsTrigger>
           <TabsTrigger value="inventory">Inventory</TabsTrigger>
           <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
+          <TabsTrigger value="sub-contracts">Sub-Contracts</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
           <BuildingOverview />
@@ -72,6 +73,9 @@ export default function BuildingDetailsPage({ params }: PageProps) {
         </TabsContent>
         <TabsContent value="payments">
           <PaymentsTab />
+        </TabsContent>
+        <TabsContent value="sub-contracts">
+          <SubContractList />
         </TabsContent>
       </Tabs>
     </div>
