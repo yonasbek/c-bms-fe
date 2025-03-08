@@ -20,7 +20,7 @@ import { useGetAllMaintenanceForBuilding } from "@/store/server/maintaince"
 import { useBuildingStore } from "@/store/buildings"
 import GlobalLoading from "@/components/global-loading"
 import { MaintenanceStatus, Priority } from "@/types/maintainance"
-// import { AddMaintenanceDialog } from "./add-maintenance-dialog"
+import { AddMaintenanceDialog } from "./add-maintenance-dialog"
 
 
 
