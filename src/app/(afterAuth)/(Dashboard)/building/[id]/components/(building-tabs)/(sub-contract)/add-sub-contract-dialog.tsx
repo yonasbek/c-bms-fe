@@ -73,8 +73,6 @@ export function AddSubContractDialog() {
         buildingId: activeBuilding?.id,
         status: "active",
       }
-      console.log(mappedData)
-
       await mutation.mutateAsync(mappedData);
       toast.success("Sub-Contract created successfully");
       setOpen(false);
