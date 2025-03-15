@@ -12,6 +12,7 @@ interface ContractType {
     roomId: string;
     room?:RoomType;
     user?:TenantUser;
+    file_url?:string;
     created_at:string;
     modified_at:string;
     // Add other contract fields as needed

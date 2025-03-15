@@ -76,21 +76,28 @@ export const useGetContract = (contractId: string) => {
 };
 
 // Update contract status (e.g., terminate contract)
-export const useUpdateContractStatus = () => {
+export const useTerminateContract = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ 
       contractId, 
-      status 
+      isActive 
     }: { 
       contractId: string; 
-      status: "active" | "terminated" | "expired" 
+      isActive: boolean 
     }) => {
-      const response = await userRequest.patch<ContractType>(
-        `/contracts/${contractId}/status`,
-        { status }
+      const response = await userRequest.put<ContractType>(
+        `/contracts/${contractId}`,
+        { is_active: isActive, contract_status: "terminated" }
       );
+      const roomId = response.data.roomId;
+      await userRequest.patch(`/room/${roomId}`, {
+        room_status: "vacant"
+      });
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+      queryClient.invalidateQueries({ queryKey: ["building-contracts"] });
+    
       return response.data;
     },
     onSuccess: (data) => {
