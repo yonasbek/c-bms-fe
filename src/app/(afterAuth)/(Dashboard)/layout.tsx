@@ -15,12 +15,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { useBuildingStore } from '@/store/buildings'
-import { SessionProvider, signOut } from 'next-auth/react'
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
+import { signOut } from 'next-auth/react'
 import { useGetBuildings } from '@/store/server/buildings'
 import { useModalStore } from '@/store/modal'
 import { AxiosError } from 'axios'
@@ -28,7 +23,7 @@ import { AxiosError } from 'axios'
 // Create a client outside the component to avoid recreating on each render
 
 const Layout = ({children}:{children:React.ReactNode}) => {
-  const { data: buildings,isSuccess, isLoading, error, refetch, isRefetching } = useGetBuildings();
+  const { data: buildings,isSuccess, isLoading, error } = useGetBuildings();
   useEffect(() => {
     if(isSuccess){
     if(!buildings.length ){

@@ -1,5 +1,5 @@
 "use client"
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import {
   BadgeCheck,
   Bell,
@@ -29,9 +29,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { use } from 'react';
 
-export const   NavUser = ({
+export const NavUser = ({
   user,
 }: {
   user: {
@@ -41,7 +40,6 @@ export const   NavUser = ({
   }
 }) => {
   const { isMobile } = useSidebar();
-  const { data,status,update } = useSession();
   // get access token from local storage
 
   return (
@@ -114,13 +112,4 @@ export const   NavUser = ({
       </SidebarMenuItem>
     </SidebarMenu>
   )
-}
-
-export default async function BuildingDetailsPage({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
-}) {
-  const resolvedParams = await params;
-  return <BuildingDetails id={resolvedParams.id} />;
 }
