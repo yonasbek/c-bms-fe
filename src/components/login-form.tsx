@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import React, { useState } from "react";
 import { SignIn } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+import { signIn as nextAuthSignIn } from "next-auth/react";
 
 export function LoginForm({
   className,
@@ -30,19 +31,42 @@ export function LoginForm({
     setIsLoading(true);
     
     try {
-      const result = await SignIn(email, password);
+      const result = await nextAuthSignIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
       
-      if (!result || result.error) {
+      console.log("[Login] Auth result:", result);
+
+      if (!result?.ok || result?.error) {
         setError("Invalid email or password. Please try again.");
+        setIsLoading(false);
         return;
       }
-      
-      // If we reach here, login was successful
-      router.push("/"); // or wherever you want to redirect after login
+
+      // Get the user data from the server
+      const response = await fetch('/api/auth/session');
+      const session = await response.json();
+      console.log("[Login] Session data:", session);
+
+      const userRole = session?.user?.role;
+      console.log("[Login] User role:", userRole);
+
+      // Redirect based on role
+      if (userRole === "admin") {
+        router.push("/");
+      } else if (userRole === "tenant") {
+        router.push("/tenant/contract");
+      } else {
+        setError("Invalid user role. Please contact support.");
+        setIsLoading(false);
+        return;
+      }
+
     } catch (err) {
+      console.error("[Login] Error:", err);
       setError("An error occurred during login. Please try again.");
-      console.error(err);
-    } finally {
       setIsLoading(false);
     }
   };
