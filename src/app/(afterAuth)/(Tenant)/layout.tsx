@@ -10,13 +10,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { useSession } from 'next-auth/react'
 import { useRouter, usePathname } from 'next/navigation'
+import { NotificationIcon } from "@/components/notification-icon"
+import { redirect } from "next/navigation"
 
 const Layout = ({children}:{children:React.ReactNode}) => {
   const { data: session, status } = useSession();
@@ -27,11 +25,13 @@ const Layout = ({children}:{children:React.ReactNode}) => {
     // If not authenticated, redirect to login
     if (status === 'unauthenticated') {
       router.push('/auth/login');
+      return;
     }
     
     // If authenticated as admin, redirect to admin dashboard
     if (status === 'authenticated' && session?.user?.role === 'admin') {
       router.push('/');
+      return;
     }
 
     // If authenticated as tenant and on the root tenant path, redirect to contract page
@@ -64,14 +64,22 @@ const Layout = ({children}:{children:React.ReactNode}) => {
     return 'Tenant Portal';
   };
 
+  if (!session) {
+    redirect("/auth/login");
+  }
+
+  if (session.user?.role !== "tenant") {
+    redirect("/");
+  }
+
   return (
     <SidebarProvider>
-      <TenantSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
+      <div className="min-h-screen flex flex-col">
+        {/* Global Header */}
+        <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-4 border-b bg-background">
+          <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Separator orientation="vertical" className="h-4" />
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
@@ -86,11 +94,24 @@ const Layout = ({children}:{children:React.ReactNode}) => {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
+          <NotificationIcon />
         </header>
-        <div className='p-4'>
-          {children}
+
+        {/* Main Layout */}
+        <div className="pt-14 flex h-[calc(100vh-3.5rem)]">
+          {/* Sidebar */}
+          <aside className="hidden w-[280px] border-r bg-background md:block flex-shrink-0">
+            <TenantSidebar />
+          </aside>
+
+          {/* Main Content */}
+          <main className="flex-1 overflow-auto">
+            <div className="w-full h-full p-4">
+              {children}
+            </div>
+          </main>
         </div>
-      </SidebarInset>
+      </div>
     </SidebarProvider>
   )
 }

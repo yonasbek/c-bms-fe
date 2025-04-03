@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueries } from "@tanstack/react-query";
-import { createMaintenanceRequest, getMaintenanceRequestsByRoomId, getTenantBuilding, getTenantContract, getTenantMaintenanceRequests, getTenantRoom } from "@/services/tenant";
-import { TenantContract } from "@/types/tenant";
+import { createMaintenanceRequest, getMaintenanceRequestsByRoomId, getTenantBuilding, getTenantContract, getTenantMaintenanceRequests, getTenantRoom, getTenantNotifications } from "@/services/tenant";
+import { TenantContract, Notification } from "@/types/tenant";
 
 export const useTenantRoom = () => {
   return useQuery({
@@ -67,4 +67,12 @@ export const useTenantBuilding = () => {
     queryKey: ["tenant-building"],
     queryFn: getTenantBuilding,
   });
-}; 
+};
+
+export function useTenantNotifications(userId: string) {
+  return useQuery<Notification[]>({
+    queryKey: ['tenant-notifications', userId],
+    queryFn: () => getTenantNotifications(userId),
+    enabled: !!userId,
+  });
+} 

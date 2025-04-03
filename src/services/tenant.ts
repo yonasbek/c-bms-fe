@@ -1,5 +1,5 @@
 import { userRequest } from "@/lib/requests";
-import { MaintenanceRequest, TenantContract, TenantRoom, Building } from "@/types/tenant";
+import { MaintenanceRequest, TenantContract, TenantRoom, Building, Notification } from "@/types/tenant";
 
 export const getTenantRoom = async (): Promise<TenantRoom> => {
   console.log("[Tenant API] Fetching tenant room data");
@@ -78,6 +78,18 @@ export const getTenantBuilding = async (): Promise<Building> => {
     return response.data;
   } catch (error) {
     console.error("[Tenant API] Error fetching building data:", error);
+    throw error;
+  }
+};
+
+export const getTenantNotifications = async (userId: string): Promise<Notification[]> => {
+  console.log("[Tenant API] Fetching notifications for userId:", userId);
+  try {
+    const response = await userRequest.get(`/notifications/user/${userId}`);
+    console.log("[Tenant API] Notifications received:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("[Tenant API] Error fetching notifications:", error);
     throw error;
   }
 }; 

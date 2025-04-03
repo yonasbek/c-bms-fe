@@ -4,6 +4,20 @@ export interface Building {
   address: string;
 }
 
+export interface Floor {
+  id: number;
+  name: string;
+  building: Building;
+}
+
+export interface Room {
+  id: number;
+  room_number: string;
+  floor: Floor;
+  floor_number: number;
+  room_status: string;
+}
+
 export interface TenantRoom {
   id: number;
   room_number: string;
@@ -17,13 +31,9 @@ export interface TenantContract {
   start_date: string;
   end_date: string;
   monthly_rent: number;
-  status: string;
+  contract_status: string;
   file_url?: string | null;
-  room: {
-    id: number;
-    room_number: string;
-    floor_number: number;
-  };
+  room: Room;
   building: Building;
 }
 
@@ -45,4 +55,14 @@ export interface MaintenanceRequest {
     id: number;
     room_number: string;
   };
+}
+
+export interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+  type: 'announcement' | 'reminder' | 'alert';
+  user_id: number;
 } 
