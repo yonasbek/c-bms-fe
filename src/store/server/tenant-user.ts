@@ -56,6 +56,7 @@ interface CreateTenantUserData {
   email: string;
   phoneNumber: string;
   role?: string;
+  tin_number?: string;
 }
 
 interface TenantUserResponse {
@@ -69,6 +70,7 @@ interface TenantUserResponse {
 interface BuildingTenantData {
   userId: string;
   buildingId: string;
+  tin_number?: string;
 }
 
 export const useCreateTenantUser = () => {
@@ -98,7 +100,8 @@ export const useCreateTenantUser = () => {
       // Then create the building-tenant relationship
       const buildingTenantData: BuildingTenantData = {
         userId: userResponse.data.id,
-        buildingId: activeBuilding.id,
+        buildingId: activeBuilding.id.toString(),
+        tin_number: data.tin_number,
       };
       if (requestData.role === "admin")
         await userRequest.post("/building-user", buildingTenantData);

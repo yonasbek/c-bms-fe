@@ -91,12 +91,12 @@ export function BuildingSwitcher({ buildings }: BuildingSwitcherProps) {
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2 cursor-pointer" onClick={()=>setModal({name:'create-building',isOpen:true})}>
+            {/* <DropdownMenuItem className="gap-2 p-2 cursor-pointer" onClick={()=>setModal({name:'create-building',isOpen:true})}>
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Plus className="size-4"  />
               </div>
               <div className="font-medium text-muted-foreground">Add Building</div>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

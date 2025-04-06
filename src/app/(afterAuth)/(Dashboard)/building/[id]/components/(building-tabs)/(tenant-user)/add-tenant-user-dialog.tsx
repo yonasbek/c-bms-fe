@@ -17,13 +17,15 @@ import {
   FormField, 
   FormItem, 
   FormLabel, 
-  FormMessage 
+  FormMessage,
+  FormDescription
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useCreateTenantUser } from "@/store/server/tenant-user"
+import { CreateTenantUserData } from "@/services/tenant"
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -31,7 +33,13 @@ const formSchema = z.object({
   phoneNumber: z
     .string()
     .min(10, "Phone number must be at least 10 digits")
-    .regex(/^\d+$/, "Phone number must contain only digits")
+    .regex(/^\d+$/, "Phone number must contain only digits"),
+  tin_number: z.string().optional(),
+  room_id: z.string(),
+  start_date: z.date(),
+  end_date: z.date(),
+  monthly_rent: z.number(),
+  contract_status: z.enum(["active", "inactive"]),
 });
 
 type TenantFormValues = z.infer<typeof formSchema>;
@@ -46,16 +54,27 @@ export function AddTenantUserDialog() {
       name: "",
       email: "",
       phoneNumber: "",
+      tin_number: "",
+      room_id: "",
+      start_date: new Date(),
+      end_date: new Date(),
+      monthly_rent: 0,
+      contract_status: "active",
     },
   });
 
   async function onSubmit(data: TenantFormValues) {
     try {
-      await createTenantUser.mutateAsync(data);
+      const formData: CreateTenantUserData = {
+        ...data,
+        start_date: data.start_date.toISOString(),
+        end_date: data.end_date.toISOString(),
+        tin_number: data.tin_number || undefined,
+      };
+      await createTenantUser.mutateAsync(formData);
       setOpen(false);
       form.reset();
     } catch (error) {
-      // Error is handled by mutation's onError
       console.error(error);
     }
   }
@@ -131,6 +150,21 @@ export function AddTenantUserDialog() {
                       maxLength={15} // Reasonable max length for phone numbers
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="tin_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>TIN Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter TIN number (optional)" {...field} />
+                  </FormControl>
+                  <FormDescription>Tax Identification Number (optional)</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -17,12 +17,36 @@ const contractStatusColors: Record<ContractStatus, string> = {
   expired: "bg-gray-100 text-gray-800",
 }
 
+type TenantWithContract = {
+  id: number;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    phoneNumber: string;
+  };
+  tin_number: string | null;
+  contracts: {
+    id: number;
+    start_date: string;
+    end_date: string;
+    monthly_rent: number;
+    contract_status: ContractStatus;
+    room?: {
+      id: number;
+      room_number: string;
+    };
+  }[];
+}
+
 export function TenantsList() {
   const { activeBuilding } = useBuildingStore();
-  const { data: tenantsD, isLoading, isError } = useGetAllTenantUsersForABuilding(activeBuilding?.id || "");
+  const { data: tenants, isLoading, isError } = useGetAllTenantUsersForABuilding(activeBuilding?.id.toString() || "");
 
   if (isLoading) return <GlobalLoading title="Tenants" />;
   if (isError) return <div>Error loading tenants</div>;
+
+  const typedTenants = tenants as unknown as TenantWithContract[];
 
   return (
     <div className="space-y-4">
@@ -32,7 +56,7 @@ export function TenantsList() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {tenantsD?.map((tenant) => {
+        {typedTenants?.map((tenant) => {
           const activeContract = tenant.contracts.find(c => c.contract_status === "active");
           return (
             <Card key={tenant.id} className={`${tenant.contracts.length === 0 ? "border-red-500" : ""}`}>
@@ -45,11 +69,14 @@ export function TenantsList() {
                     <div>
                       <CardTitle className="text-base">{tenant.user.name}</CardTitle>
                       <CardDescription>{tenant.user.email}</CardDescription>
+                      <CardDescription className="mt-1">
+                        TIN: {tenant.tin_number || "No TIN number"}
+                      </CardDescription>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     {activeContract?.room?.room_number && (
-                      <Badge variant="outline">Room {activeContract.room.room_number}</Badge>
+                      <Badge variant="outline">Room {activeContract.room.room_number.charAt(0).toUpperCase() + activeContract.room.room_number.slice(1)}</Badge>
                     )}
                     {tenant.contracts.length === 0 && <Badge variant="destructive">No Contract</Badge>}
                   </div>
@@ -81,7 +108,7 @@ export function TenantsList() {
                             </div>
                             <Badge 
                               variant="outline" 
-                              className={contractStatusColors[contract.contract_status as ContractStatus] || "bg-gray-100 text-gray-800"}
+                              className={contractStatusColors[contract.contract_status] || "bg-gray-100 text-gray-800"}
                             >
                               {contract.contract_status.charAt(0).toUpperCase() + contract.contract_status.slice(1)}
                             </Badge>

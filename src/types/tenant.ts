@@ -65,4 +65,19 @@ export interface Notification {
   created_at: string;
   type: 'announcement' | 'reminder' | 'alert';
   user_id: number;
+}
+
+export interface TenantUser {
+  id: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    tin_number?: string;
+  };
+  building_id: string;
+  contracts: Contract[];
+  created_at: string;
+  updated_at: string;
 } 

@@ -92,4 +92,28 @@ export const getTenantNotifications = async (userId: string): Promise<Notificati
     console.error("[Tenant API] Error fetching notifications:", error);
     throw error;
   }
-}; 
+};
+
+export type CreateTenantUserData = {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  tin_number?: string;
+  room_id: string;
+  start_date: string;
+  end_date: string;
+  monthly_rent: number;
+  contract_status: "active" | "inactive";
+}
+
+export async function createTenantUser(data: CreateTenantUserData) {
+  console.log("Creating tenant user with data:", data);
+  try {
+    const response = await userRequest.post("/tenant-users", data);
+    console.log("Tenant user created successfully:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating tenant user:", error);
+    throw error;
+  }
+} 
