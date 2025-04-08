@@ -151,7 +151,7 @@ export default function Page() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">Occupancy Rate</p>
-                <p className="text-sm font-medium">87%</p>
+                <p className="text-sm font-medium">87&#37;</p>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">Revenue This Month</p>

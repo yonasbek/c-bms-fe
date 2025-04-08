@@ -232,7 +232,7 @@ function MaintenanceRequestCard({ request }: { request: MaintenanceRequest }) {
           <div>
             <CardTitle>Maintenance Request #{request.id}</CardTitle>
             <CardDescription>
-              Room {request.room?.room_number || request.roomId} • Created {format(new Date(request.created_at), "MMM d, yyyy")}
+              Room {request.room?.room_number || request.roomId} &#8226; Created {format(new Date(request.created_at), "MMM d, yyyy")}
             </CardDescription>
           </div>
           <div className="flex gap-2">
@@ -244,7 +244,7 @@ function MaintenanceRequestCard({ request }: { request: MaintenanceRequest }) {
                 {request.priority} Priority
               </Badge>
             )}
-            <Badge variant={getStatusVariant(request.request_status)} className="capitalize">
+            <Badge variant={getStatusVariant(request.request_status) as "outline" | "secondary" | "default" | "destructive" | null} className="capitalize">
               {request.request_status.replace('_', ' ')}
             </Badge>
           </div>

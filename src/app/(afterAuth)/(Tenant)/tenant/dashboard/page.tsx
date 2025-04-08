@@ -183,7 +183,7 @@ export default function TenantDashboardPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   <DollarSign className="h-4 w-4" />
-                  <p className="text-2xl font-bold">{dashboardData.contract.monthly_rent.toLocaleString()}</p>
+                  <p className="text-2xl font-bold">{dashboardData.contract.monthly_rent.toLocaleString()}&#36;</p>
                 </div>
                 <Badge 
                   variant={dashboardData.contract.status === 'active' ? 'default' : 'secondary'}
