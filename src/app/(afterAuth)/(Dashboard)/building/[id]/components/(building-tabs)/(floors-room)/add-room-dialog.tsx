@@ -39,12 +39,12 @@ import {
 const formSchema = z.object({
   room_number: z.string().min(1, "Room number is required"),
   room_status: z.enum(["occupied", "vacant", "maintenance"]),
-  room_size: z.number().min(1, "Room size must be at least 1m²"),
+  room_size: z.string().min(1, "Room size must be at least 1m²"),
 });
 
 type RoomFormValues = z.infer<typeof formSchema>;
 
-export function AddRoomDialog({ floorId }: { floorId: number }) {
+export function AddRoomDialog({ floorId }: { floorId: string }) {
   const [open, setOpen] = useState(false);
   const createRoom = useCreateRoom();
 
@@ -53,15 +53,19 @@ export function AddRoomDialog({ floorId }: { floorId: number }) {
     defaultValues: {
       room_number: "",
       room_status: "vacant",
-      room_size: 0,
+      room_size: "",
     },
   });
 
   async function onSubmit(data: RoomFormValues) {
     try {
       await createRoom.mutateAsync({
-        ...data,
-        floor_id: floorId,
+        floorId,
+        name: data.room_number,
+        room_number: data.room_number,
+        room_status: 'vacant',
+        room_size: data.room_size as string,
+        description: "",
       });
       setOpen(false);
       form.reset();
