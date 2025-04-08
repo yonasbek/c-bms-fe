@@ -25,7 +25,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { contractService } from "@/services/contract";
 import { toast } from "sonner";
-import { DatePicker } from "@/components/ui/date-picker";
 
 const formSchema = z.object({
   tenant_id: z.number(),
@@ -64,7 +63,12 @@ export function AddContractDialog({ tenantId, roomId, roomSize, onSuccess }: Add
   async function onSubmit(data: ContractFormValues) {
     try {
       setIsLoading(true);
-      await contractService.createContract(data);
+      await contractService.createContract(
+        {
+          ...data,
+          monthly_rent: monthlyRent,
+        }
+      );
       toast.success("Contract created successfully");
       setOpen(false);
       form.reset();
@@ -103,9 +107,9 @@ export function AddContractDialog({ tenantId, roomId, roomSize, onSuccess }: Add
                 <FormItem>
                   <FormLabel>Start Date</FormLabel>
                   <FormControl>
-                    <DatePicker
-                      date={new Date(field.value)}
-                      onSelect={(date) => field.onChange(date?.toISOString())}
+                    <Input
+                      type="date"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -120,9 +124,9 @@ export function AddContractDialog({ tenantId, roomId, roomSize, onSuccess }: Add
                 <FormItem>
                   <FormLabel>End Date</FormLabel>
                   <FormControl>
-                    <DatePicker
-                      date={new Date(field.value)}
-                      onSelect={(date) => field.onChange(date?.toISOString())}
+                    <Input
+                      type="date"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
