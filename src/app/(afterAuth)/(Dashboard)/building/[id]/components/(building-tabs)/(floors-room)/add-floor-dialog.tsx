@@ -36,7 +36,7 @@ const {activeBuilding} = useBuildingStore();
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      buildingId: activeBuilding?.id,
+      buildingId: activeBuilding?.id as string,
     },
   })
 
