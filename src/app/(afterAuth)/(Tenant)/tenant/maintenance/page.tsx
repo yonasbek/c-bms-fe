@@ -138,7 +138,7 @@ export default function TenantMaintenancePage() {
               <CardHeader className="text-center">
                 <CardTitle>No Active Requests</CardTitle>
                 <CardDescription>
-                  You don't have any active maintenance requests
+                  You dont have any active maintenance requests
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center justify-center py-8">
@@ -169,7 +169,7 @@ export default function TenantMaintenancePage() {
               <CardHeader className="text-center">
                 <CardTitle>No Completed Requests</CardTitle>
                 <CardDescription>
-                  You don't have any completed maintenance requests
+                  You dont have any completed maintenance requests
                 </CardDescription>
               </CardHeader>
             </Card>

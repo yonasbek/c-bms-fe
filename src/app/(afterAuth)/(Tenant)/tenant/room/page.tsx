@@ -65,7 +65,7 @@ export default function TenantRoomPage() {
         <Card>
           <CardHeader>
             <CardTitle>No Room Assigned</CardTitle>
-            <CardDescription>You don't have a room assigned yet.</CardDescription>
+            <CardDescription>You dont have a room assigned yet.</CardDescription>
           </CardHeader>
         </Card>
       </div>

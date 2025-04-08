@@ -123,7 +123,7 @@ export default function TenantDashboardPage() {
           <div className="space-y-2">
             <h3 className="text-2xl font-semibold">No Data Available</h3>
             <p className="text-muted-foreground max-w-sm">
-              We couldn't load your dashboard data. Please try again later or contact support.
+              We couldnt load your dashboard data. Please try again later or contact support.
             </p>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function TenantDashboardPage() {
       <div className="space-y-1">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome to your tenant portal. Here's an overview of your information.
+          Welcome to your tenant portal. Heres an overview of your information.
         </p>
       </div>
 
