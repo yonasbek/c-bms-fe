@@ -102,7 +102,7 @@ function FloorItem({ floor }: { floor: FloorWithRooms }) {
               <h3 className="font-semibold">{floor.name}</h3>
               <Badge variant="outline">{floor.rooms.length} Rooms</Badge>
             </div>
-            <AddRoomDialog floorId={floor.id} />
+            <AddRoomDialog floorId={floor.id.toString()} />
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent>
