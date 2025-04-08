@@ -2,11 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building2, Users, ClipboardList, Wrench } from "lucide-react"
-import { useEffect, useState, useCallback } from "react"
-import { useModalStore } from "@/store/modal"
-import CustomModal from "@/components/custom-modal";
 import { useGetBuildings } from "@/store/server/buildings";
-import { useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Page() {
@@ -159,11 +155,11 @@ export default function Page() {
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">Revenue This Month</p>
-                <p className="text-sm font-medium">$52,000</p>
+                <p className="text-sm font-medium">&#36;52,000</p>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">Pending Payments</p>
-                <p className="text-sm font-medium">$3,200</p>
+                <p className="text-sm font-medium">&#36;3,200</p>
               </div>
             </div>
           </CardContent>
