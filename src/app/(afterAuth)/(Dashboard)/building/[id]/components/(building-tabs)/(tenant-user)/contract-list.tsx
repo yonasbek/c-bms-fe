@@ -15,9 +15,9 @@ interface ContractListProps {
   roomSize: number;
 }
 
-export async function ContractList({ tenantId, roomId, roomSize }: ContractListProps) {
+export  function ContractList({ tenantId, roomId, roomSize }: ContractListProps) {
   const [open, setIsOpen] = useState(false);
-  const { data: contracts, isLoading } = await GetContractsForTenant(tenantId);
+  const { data: contracts, isLoading } =  GetContractsForTenant(tenantId);
 
   if (isLoading) {
     return <div>Loading contracts...</div>;
