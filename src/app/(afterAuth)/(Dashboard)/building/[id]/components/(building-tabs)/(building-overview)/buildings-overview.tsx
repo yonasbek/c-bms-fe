@@ -6,7 +6,7 @@ import { Building2, Users, Home, AlertCircle } from "lucide-react"
 
 export function BuildingOverview() {
   const {activeBuilding} = useBuildingStore();
-  const {data,isLoading} = useGetFloorsForBuilding(activeBuilding?.id);
+  const {data,isLoading} = useGetFloorsForBuilding(activeBuilding?.id as string);
   const floors = data?.data;
 
   const totalFloors = floors?.length ||0;
