@@ -114,7 +114,7 @@ export function PaymentsList() {
                         variant="ghost"
                         size="sm"
                         className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-                        onClick={() => window.open(getFullFileUrl(payment.file_url), '_blank')}
+                        onClick={() => window.open(getFullFileUrl(payment.file_url as string) || "", '_blank')}
                       >
                         <FileText className="h-4 w-4" />
                         View Receipt
