@@ -21,25 +21,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: credentials.email,
             password: credentials.password
           });
-          console.log(r.data)
-          user = r.data.access_token ? {
-            id: r.data.id,
-            name: r.data.name,
-            email: r.data.email,
-            role: r.data.role,
-            phoneNumber: r.data.phone,
-            access_token: r.data.access_token
-          } : null
-
+          console.log("[Auth] Login response:", r.data);
+          
+          if (r.data.access_token) {
+            user = {
+              id: r.data.id.toString(), // Ensure ID is a string
+              name: r.data.name,
+              email: r.data.email,
+              role: r.data.role,
+              phoneNumber: r.data.phone,
+              access_token: r.data.access_token
+            };
+            console.log("[Auth] Created user object:", user);
+          }
         }
         catch (error: unknown) {
           // Instead of throwing errors, return null
-          console.error("Login error:", error);
+          console.error("[Auth] Login error:", error);
           return null;
         }
         
         // If no user was found, return null instead of throwing an error
         if (!user) {
+          console.log("[Auth] No user object created");
           return null;
         }
         
@@ -50,46 +54,51 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt" },
 
   callbacks: {
-    async session({ session, token, }) {
-      if(token.sub && session.user){
-        session.user.id = token.sub;
-      }
-      if(token.role && session.user){
+    async session({ session, token }) {
+      console.log("[Auth] Session callback - token:", token);
+      console.log("[Auth] Session callback - initial session:", session);
+
+      if (session.user) {
+        session.user.id = token.sub || '';
         session.user.role = token.role as string;
         session.user.phoneNumber = token.phoneNumber as string;
         session.user.access_token = token.access_token as string;
       }
-      console.log('access token', session.user.access_token)
-      // console.log("From Session Callback", session);
-      return session;
 
-      //   console.log("From Session Callback", user);
-      // return {
-      //   ...session,
-      //   user: {
-      //     ...session.user,
-      //     id: token.id as string,
-      //     role: token.role as string,
-      //     phoneNumber: token.phoneNumber as string,
-      //     access_token: token.access_token as string,
-        
-      //   },
-      // };
+      console.log("[Auth] Session callback - final session:", session);
+      return session;
     },
-    async jwt({ token,user }) {
+    async jwt({ token, user }) {
+      console.log("[Auth] JWT callback - initial token:", token);
+      console.log("[Auth] JWT callback - user:", user);
+
       if (user) {
         token.role = user.role;
         token.phoneNumber = user.phoneNumber;
         token.access_token = user.access_token;
       }
+
+      console.log("[Auth] JWT callback - final token:", token);
       return token;
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async redirect({ url, baseUrl }) {
-      // Handle any redirects
-      return  baseUrl;
+      console.log("[Auth] Redirect callback - url:", url);
+      console.log("[Auth] Redirect callback - baseUrl:", baseUrl);
+
+      if (url.startsWith('/')) {
+        const fullUrl = `${baseUrl}${url}`;
+        console.log("[Auth] Redirecting to:", fullUrl);
+        return fullUrl;
+      }
+      else if (url.startsWith(baseUrl)) {
+        console.log("[Auth] Redirecting to:", url);
+        return url;
+      }
+      
+      console.log("[Auth] Redirecting to baseUrl:", baseUrl);
+      return baseUrl;
     },
-    
   },
   secret: process.env.NEXTAUTH_SECRET,
   
@@ -98,4 +107,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // Add an error page to handle displaying errors in your login form
     error: "/auth/login", 
   },
+
+  debug: true, // Enable debug mode for more detailed logs
 });

@@ -8,7 +8,7 @@ import { create } from 'zustand';
 interface BuildingStore {
   buildings: Building[];
   activeBuilding: Building | null;
-  setActiveBuilding: (buildingId: string) => void;
+  setActiveBuilding: (buildingId: string | number) => void;
   setBuildings: (buildings: Building[]) => void;
   addBuilding: (building: Omit<Building, 'id'>) => void;
 }
@@ -34,8 +34,11 @@ export const useBuildingStore = create<BuildingStore>((set, get) => ({
   activeBuilding: null,
   
   // Set the active building based on its ID
-  setActiveBuilding: (buildingId: string) => {
-    const building = get().buildings.find((b) => b.id === buildingId) || null;
+  setActiveBuilding: (buildingId: string | number) => {
+    const building = get().buildings.find((b) => 
+      // Handle both string and number IDs
+      b.id.toString() === buildingId.toString()
+    ) || null;
     set({ activeBuilding: building });
   },
   

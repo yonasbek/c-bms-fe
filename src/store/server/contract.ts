@@ -5,15 +5,6 @@ import { toast } from "sonner";
 import { AxiosError } from "axios";
 import ContractType from "@/types/contract";
 
-interface CreateContractData {
-  tenantId: string;
-  roomId: string;
-  startDate: string;
-  endDate: string;
-  monthlyRent: string;
-  contractFile: string | null;
-}
-
 // Get all contracts for a building
 export const useGetBuildingContracts = (buildingId: string) => {
   return useQuery({
@@ -29,38 +20,39 @@ export const useCreateContract = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: CreateContractData) => {
-      // First create the contract
-      const requestData = {
-        userId: data.tenantId,
-        roomId: data.roomId,
-        start_date: data.startDate,
-        end_date: data.endDate,
-        monthly_rent: parseFloat(data.monthlyRent),
-        contract_status: "active",
-        file_url: null
-      };
-
-      const contract = await userRequest.post<ContractType>("/contracts", requestData);
-
-      // Then update room status to rented
-      await userRequest.patch(`/room/${data.roomId}`, {
-        room_status: "rented"
-      });
-
-      return contract.data;
+    mutationFn: async (data: {
+      userId: number;
+      roomId: number;
+      start_date: string;
+      end_date: string;
+      rate_per_sqm: number;
+      monthly_rent: number;
+      is_active: boolean;
+      contract_status: string;
+    }) => {
+      console.log('Mutation starting with data:', data);
+      try {
+        const response = await userRequest.post<ContractType>("/contracts", data);
+        console.log('API Response:', response);
+        return response.data;
+      } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+      }
     },
-    onSuccess: (_, variables) => {
+    onMutate: (variables) => {
+      console.log('Mutation starting with variables:', variables);
+    },
+    onSuccess: (data) => {
+      console.log('Contract created successfully:', data);
       toast.success("Contract created successfully");
-      // Invalidate all relevant queries
+      // Invalidate all building contracts queries
       queryClient.invalidateQueries({ queryKey: ["building-contracts"] });
-      queryClient.invalidateQueries({ queryKey: ["tenant-contract", variables.tenantId] });
-      queryClient.invalidateQueries({ queryKey: ["roomsInFloor"] }); // Invalidate all room queries
-      queryClient.invalidateQueries({ queryKey: ["rooms"] });
     },
     onError: (error: AxiosError<{ message: string }>) => {
       console.error("Failed to create contract:", error);
-      toast.error(error.response?.data?.message || "Failed to create contract");
+      const errorMessage = error.response?.data?.message || error.message || "Failed to create contract";
+      toast.error(errorMessage);
     },
   });
 };
@@ -91,22 +83,17 @@ export const useTerminateContract = () => {
         `/contracts/${contractId}`,
         { is_active: isActive, contract_status: "terminated" }
       );
-      const roomId = response.data.roomId;
+      const roomId = response.data.room.id;
       await userRequest.patch(`/room/${roomId}`, {
         room_status: "vacant"
       });
-      queryClient.invalidateQueries({ queryKey: ["rooms"] });
-      queryClient.invalidateQueries({ queryKey: ["building-contracts"] });
-    
       return response.data;
     },
     onSuccess: (data) => {
       toast.success("Contract status updated successfully");
-      // Invalidate relevant queries
       queryClient.invalidateQueries({ queryKey: ["building-contracts"] });
-      queryClient.invalidateQueries({ queryKey: ["tenant-contract", data.userId] });
+      queryClient.invalidateQueries({ queryKey: ["tenant-contract", data.user.id] });
       queryClient.invalidateQueries({ queryKey: ["contract", data.id] });
-      // If contract is terminated/expired, room becomes vacant
       if (data.contract_status !== "active") {
         queryClient.invalidateQueries({ queryKey: ["rooms"] });
       }

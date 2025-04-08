@@ -8,7 +8,18 @@ export interface FloorType {
     updatedAt: string;
 }
 
-export interface FloorWithRooms extends FloorType {
-    rooms: RoomType[];
-  }
+export interface FloorWithRooms {
+  id: number;
+  name: string;
+  buildingId: number;
+  is_active: boolean;
+  created_at: string;
+  modified_at: string;
+  rooms: {
+    id: number;
+    room_number: string;
+    room_status: "occupied" | "vacant" | "maintenance";
+    room_size: number;
+  }[];
+}
 

@@ -41,7 +41,7 @@ export function FloorsList() {
 const {activeBuilding} = useBuildingStore();
 
 // const {data,isLoading} = useGetFloorsForBuilding(activeBuilding?.id);
-const {data:floors,isLoading } = useGetAllFloorsRoomsForBuilding(activeBuilding?.id);
+const {data:floors,isLoading } = useGetAllFloorsRoomsForBuilding(activeBuilding?.id.toString() || "");
 
 // const {data:rooms} = useGetRoomsForFloor(activeBuilding?.id);
 
@@ -116,10 +116,15 @@ function FloorItem({ floor }: { floor: FloorWithRooms }) {
                       room.room_status === "occupied" ? "default" : room.room_status === "vacant" ? "secondary" : "destructive"
                     }
                   >
-                    {room.room_status}
+                    {room.room_status.charAt(0).toUpperCase() + room.room_status.slice(1)}
                   </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    Size: {room.room_size}m²
+                  </span>
                 </div>
-                <div className="text-sm text-muted-foreground">{room.room_number || "No tenant"}</div>
+                <div className="text-sm text-muted-foreground">
+                  {room.room_status === "occupied" ? "Occupied" : "Available"}
+                </div>
               </div>
             ))}
           </div>

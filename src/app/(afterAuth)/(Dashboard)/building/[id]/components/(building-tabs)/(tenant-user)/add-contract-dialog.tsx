@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,105 +19,93 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useCreateRoom } from "@/store/server/room";
+import { contractService } from "@/services/contract";
 import { toast } from "sonner";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
 
 const formSchema = z.object({
-  room_number: z.string().min(1, "Room number is required"),
-  room_status: z.enum(["occupied", "vacant", "maintenance"]),
+  tenant_id: z.number(),
+  room_id: z.number(),
+  start_date: z.string(),
+  end_date: z.string(),
+  rate_per_sqm: z.number().min(0, "Rate must be positive"),
   room_size: z.number().min(1, "Room size must be at least 1m²"),
 });
 
-type RoomFormValues = z.infer<typeof formSchema>;
+type ContractFormValues = z.infer<typeof formSchema>;
 
-export function AddRoomDialog({ floorId }: { floorId: number }) {
+interface AddContractDialogProps {
+  tenantId: number;
+  roomId: number;
+  roomSize: number;
+  onSuccess?: () => void;
+}
+
+export function AddContractDialog({ tenantId, roomId, roomSize, onSuccess }: AddContractDialogProps) {
   const [open, setOpen] = useState(false);
-  const createRoom = useCreateRoom();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<RoomFormValues>({
+  const form = useForm<ContractFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      room_number: "",
-      room_status: "vacant",
-      room_size: 0,
+      tenant_id: tenantId,
+      room_id: roomId,
+      start_date: new Date().toISOString(),
+      end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 year from now
+      rate_per_sqm: 0,
+      room_size: roomSize,
     },
   });
 
-  async function onSubmit(data: RoomFormValues) {
+  async function onSubmit(data: ContractFormValues) {
     try {
-      await createRoom.mutateAsync({
-        ...data,
-        floor_id: floorId,
-      });
+      setIsLoading(true);
+      await contractService.createContract(data);
+      toast.success("Contract created successfully");
       setOpen(false);
       form.reset();
+      onSuccess?.();
     } catch (error) {
       console.error(error);
+      toast.error("Failed to create contract");
+    } finally {
+      setIsLoading(false);
     }
   }
+
+  const monthlyRent = form.watch("rate_per_sqm") * roomSize;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Add Room
+          Add Contract
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Room</DialogTitle>
+          <DialogTitle>Create New Contract</DialogTitle>
           <DialogDescription>
-            Add a new room to this floor.
+            Create a new contract for this tenant and room.
           </DialogDescription>
         </DialogHeader>
-        {createRoom.error && (
-          <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
-            {createRoom.error instanceof Error 
-              ? createRoom.error.message 
-              : "An error occurred while creating the room"}
-          </div>
-        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="room_number"
+              name="start_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Room Number</FormLabel>
+                  <FormLabel>Start Date</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter room number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="room_size"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Room Size (m²)</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="Enter room size in square meters" 
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    <DatePicker
+                      date={new Date(field.value)}
+                      onSelect={(date) => field.onChange(date?.toISOString())}
                     />
                   </FormControl>
                   <FormMessage />
@@ -129,47 +115,62 @@ export function AddRoomDialog({ floorId }: { floorId: number }) {
 
             <FormField
               control={form.control}
-              name="room_status"
+              name="end_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Room Status</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select room status" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="vacant">Vacant</SelectItem>
-                      <SelectItem value="occupied">Occupied</SelectItem>
-                      <SelectItem value="maintenance">Maintenance</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>End Date</FormLabel>
+                  <FormControl>
+                    <DatePicker
+                      date={new Date(field.value)}
+                      onSelect={(date) => field.onChange(date?.toISOString())}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="rate_per_sqm"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rate per Square Meter</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter rate per square meter"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="p-4 bg-muted rounded-md">
+              <div className="text-sm font-medium">Room Size: {roomSize}m²</div>
+              <div className="text-sm font-medium">Monthly Rent: ${monthlyRent.toFixed(2)}</div>
+            </div>
 
             <div className="flex justify-end gap-3 pt-4">
               <Button
                 variant="outline"
                 onClick={() => setOpen(false)}
                 type="button"
-                disabled={createRoom.isPending}
+                disabled={isLoading}
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit"
-                disabled={createRoom.isPending}
-              >
-                {createRoom.isPending ? (
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? (
                   <>
                     <span className="loading loading-spinner loading-sm mr-2"></span>
                     Creating...
                   </>
                 ) : (
-                  "Create Room"
+                  "Create Contract"
                 )}
               </Button>
             </div>
@@ -178,4 +179,4 @@ export function AddRoomDialog({ floorId }: { floorId: number }) {
       </DialogContent>
     </Dialog>
   );
-}
+} 
