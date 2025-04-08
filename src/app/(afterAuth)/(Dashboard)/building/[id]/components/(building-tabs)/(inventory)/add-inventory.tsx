@@ -62,7 +62,14 @@ export function AddInventoryDialog({ trigger }: AddInventoryDialogProps) {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     console.log(data, 'data')
     try {
-      await mutation.mutateAsync({...data, buildingId: activeBuilding?.id});
+      await mutation.mutateAsync({ 
+        buildingId: activeBuilding?.id as string,
+        itemId: data.itemId,
+        quantity: data.quantity,
+        procured_date: new Date(data.procured_date),
+        status: data.status,
+        description: data.description,
+      });
       toast.success("Inventory item added successfully");
       setOpen(false);
       form.reset();
