@@ -37,7 +37,7 @@ export function SubContractList() {
   const [statusFilter, setStatusFilter] = useState<ContractStatus | "all">("all")
   const [selectedContract, setSelectedContract] = useState<SubContractType | null>(null)
   const {activeBuilding} = useBuildingStore();
-  const {data:subContracts,isLoading} = useGetAllSubContractForBuilding(activeBuilding?.id);
+  const {data:subContracts,isLoading} = useGetAllSubContractForBuilding(activeBuilding?.id as string);
 
   const filteredContracts = subContracts?.filter((contract) => {
     const matchesSearch = contract.company_name.toLowerCase().includes(search.toLowerCase())

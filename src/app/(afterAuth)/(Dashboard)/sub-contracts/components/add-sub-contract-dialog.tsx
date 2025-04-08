@@ -21,6 +21,7 @@ import * as z from "zod"
 import { useCreateSubContract } from "@/store/server/subContract"
 import { toast } from "sonner"
 import { useBuildingStore } from "@/store/buildings"
+import { ServiceType } from "@/types/subContract"
 const days = [
   { id: "monday", label: "Monday" },
   { id: "tuesday", label: "Tuesday" },
@@ -68,10 +69,19 @@ export function AddSubContractDialog() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const mappedData = {
-        ...data,
+        company_name: data.company_name,
+        service_type: data.service_type as ServiceType,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        amount: data.amount,
+        number_of_employees: data.number_of_employees,
+        contact_name: data.contact_name,
+        contact_phone: data.contact_phone,
+        contact_email: data.contact_email,
         service_days: data.service_days_array.join(","),
-        buildingId: activeBuilding?.id,
+        buildingId: activeBuilding?.id as string,
         status: "active",
+        service_hours: data.service_hours,
       }
       console.log(mappedData)
 

@@ -55,7 +55,7 @@ const priorityColors: Record<Priority, string> = {
 export function MaintenanceList() {
   const [filter, setFilter] = useState<MaintenanceStatus | "all">("all")
   const {activeBuilding} = useBuildingStore();
-  const {data:maintenance,isLoading} = useGetAllMaintenanceForBuilding(activeBuilding?.id);
+  const {data:maintenance,isLoading} = useGetAllMaintenanceForBuilding(activeBuilding?.id as string);
   console.log(maintenance, 'maintenance')
   const filteredRequests = maintenance?.filter((request) => filter === "all" || request.request_status === filter)
   const [isOpen, setIsOpen] = useState(false);

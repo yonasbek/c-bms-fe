@@ -11,7 +11,7 @@ import { useBuildingStore } from "@/store/buildings"
 
 export function InventoryList() {
   const {activeBuilding} = useBuildingStore();
-  const { data: inventory, isLoading } = useGetAllInventoryForBuilding(activeBuilding?.id); // Fetch inventory using a custom hook
+  const { data: inventory, isLoading } = useGetAllInventoryForBuilding(activeBuilding?.id as string); // Fetch inventory using a custom hook
 
   if (isLoading) {
     return <GlobalLoading title="Loading Inventory" />;

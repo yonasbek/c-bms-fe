@@ -47,7 +47,7 @@ export function AddMaintenanceDialog({ trigger }: AddMaintenanceDialogProps) {
   const {activeBuilding} = useBuildingStore();
 
   // Fetch rooms
-  const { data: rooms, isLoading: loadingRooms } = useGetRoomsForBuilding(activeBuilding?.id); // Fetch rooms using a custom hook
+  const { data: rooms, isLoading: loadingRooms } = useGetRoomsForBuilding(activeBuilding?.id as string); // Fetch rooms using a custom hook
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

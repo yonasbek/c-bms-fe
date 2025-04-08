@@ -39,7 +39,7 @@ export default function NotificationsPage() {
   const formRef = useRef<HTMLFormElement>(null)
   const { activeBuilding } = useBuildingStore()
   const { data: notifications, isLoading } = useGetNotifications()
-  const { data: tenants } = useGetAllTenantUsersForABuilding(activeBuilding?.id || "")
+  const { data: tenants } = useGetAllTenantUsersForABuilding(activeBuilding?.id as string)
   const createNotification = useCreateNotification()
 
   // Debug logs

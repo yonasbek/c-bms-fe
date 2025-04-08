@@ -50,7 +50,7 @@ export function AddPaymentDialog() {
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const { activeBuilding } = useBuildingStore()
-  const { data: tenants, isLoading: isLoadingTenants } = useGetAllTenantUsersForABuilding(activeBuilding?.id || "")
+  const { data: tenants, isLoading: isLoadingTenants } = useGetAllTenantUsersForABuilding(activeBuilding?.id as string)
   const { mutate: createPayment, isPending } = useCreatePayment()
 
   const form = useForm<PaymentFormValues>({
