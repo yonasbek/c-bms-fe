@@ -60,7 +60,7 @@ export interface ContractType {
     id: number;
     name: string;
   };
-  payments?: PaymentType[];
+  payments?: any[];
 }
 
 export default ContractType;

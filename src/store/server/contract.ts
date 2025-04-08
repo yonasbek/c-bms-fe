@@ -3,7 +3,7 @@ import { userRequest } from "@/lib/requests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
-import ContractType from "@/types/contract";
+import ContractType, { Contract, ContractWithDetails } from "@/types/contract";
 
 // Get all contracts for a building
 export const useGetBuildingContracts = (buildingId: string) => {
@@ -103,4 +103,34 @@ export const useTerminateContract = () => {
       toast.error(error.response?.data?.message || "Failed to update contract status");
     },
   });
+};
+
+export const useGetContractsForTenant = (tenantId: number) => {
+  return useQuery({
+    queryKey: ["tenant-contract", tenantId],
+    queryFn: () => userRequest.get<ContractWithDetails[]>(`/contracts/tenant/${tenantId}`),
+  });
+};
+
+export const GetContractsForTenant = (tenantId: number) => {
+  const contractsQuery = useGetContractsForTenant(tenantId);
+  const contracts = contractsQuery.data?.data || [];
+  
+
+
+  const isLoading = contractsQuery.isLoading;
+  const isError = contractsQuery.isError;
+  const error = contractsQuery.error;
+
+
+
+  return {
+    data: contracts,
+    isLoading,
+    isError,
+    error,
+    refetch: async () => {
+      await contractsQuery.refetch();
+    }
+  };
 };

@@ -5,7 +5,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { AddContractDialog } from "./add-contract-dialog";
-import { useGetContractsForTenant } from "@/store/server/contract";
+import { GetContractsForTenant } from "@/store/server/contract";
 import { ContractWithDetails } from "@/types/contract";
 import { format } from "date-fns";
 
@@ -15,9 +15,9 @@ interface ContractListProps {
   roomSize: number;
 }
 
-export function ContractList({ tenantId, roomId, roomSize }: ContractListProps) {
+export async function ContractList({ tenantId, roomId, roomSize }: ContractListProps) {
   const [open, setIsOpen] = useState(false);
-  const { data: contracts, isLoading } = useGetContractsForTenant(tenantId);
+  const { data: contracts, isLoading } = await GetContractsForTenant(tenantId);
 
   if (isLoading) {
     return <div>Loading contracts...</div>;
