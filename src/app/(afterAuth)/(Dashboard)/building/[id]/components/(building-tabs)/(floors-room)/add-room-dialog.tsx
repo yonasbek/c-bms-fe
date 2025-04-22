@@ -120,10 +120,10 @@ export function AddRoomDialog({ floorId }: { floorId: string }) {
                   <FormLabel>Room Size (m²)</FormLabel>
                   <FormControl>
                     <Input 
-                      type="number" 
+                      type="text" 
                       placeholder="Enter room size in square meters" 
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      onChange={(e) => field.onChange(e.target.value)}
                     />
                   </FormControl>
                   <FormMessage />
