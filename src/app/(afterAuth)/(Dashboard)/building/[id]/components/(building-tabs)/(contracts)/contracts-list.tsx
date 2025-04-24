@@ -153,7 +153,7 @@ export function ContractsList() {
   )
 }
 
-function ContractCard({ contract }: { contract: ContractType & {payments: PaymentType[]} }) {
+function ContractCard({ contract }: any) {
   const { data: documents, isLoading: isLoadingDocuments } = useGetContractDocuments(contract.id.toString())
   
   // Debug logs

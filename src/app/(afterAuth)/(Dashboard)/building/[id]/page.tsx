@@ -42,9 +42,9 @@ export default function BuildingDetailsPage({ params }: PageProps) {
         </div>
       </div>
 
-      <Tabs defaultValue="overview" className="space-y-4">
+      <Tabs defaultValue="floors" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
+          {/* <TabsTrigger value="overview">Overview</TabsTrigger> */}
           <TabsTrigger value="floors">Floors & Rooms</TabsTrigger>
           <TabsTrigger value="tenants">Tenant-Users</TabsTrigger>
           <TabsTrigger value="contracts">Contracts</TabsTrigger>
@@ -53,9 +53,9 @@ export default function BuildingDetailsPage({ params }: PageProps) {
           <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
           <TabsTrigger value="sub-contracts">Sub-Contracts</TabsTrigger>
         </TabsList>
-        <TabsContent value="overview" className="space-y-4">
+        {/* <TabsContent value="overview" className="space-y-4">
           <BuildingOverview />
-        </TabsContent>
+        </TabsContent> */}
         <TabsContent value="floors" className="space-y-4">
           <FloorsList />
         </TabsContent>
