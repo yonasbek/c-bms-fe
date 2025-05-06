@@ -6,10 +6,17 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Badge } from "@/components/ui/badge"
 import { AddFloorDialog } from "./add-floor-dialog"
 import { AddRoomDialog } from "./add-room-dialog"
-import { useGetAllFloorsRoomsForBuilding } from "@/store/server/floor"
+import { useGetAllFloorsRoomsForBuilding, useGetRoomsForFloorWithStatus } from "@/store/server/floor"
 import { useBuildingStore } from "@/store/buildings"
 import GlobalLoading from "@/components/global-loading"
 import { FloorWithRooms } from "@/types/floor"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // // Dummy data - replace with actual data fetching
 // const floors = [
@@ -35,25 +42,53 @@ import { FloorWithRooms } from "@/types/floor"
 //   },
 // ]
 
-
-
 export function FloorsList() {
-const {activeBuilding} = useBuildingStore();
+  const { activeBuilding } = useBuildingStore();
+  const { data: floors, isLoading } = useGetAllFloorsRoomsForBuilding(activeBuilding?.id.toString() || "");
+  const [selectedFloor, setSelectedFloor] = useState<string>("all");
+  const [roomStatus, setRoomStatus] = useState<"all" | "vacant" | "rented">("all");
 
-// const {data,isLoading} = useGetFloorsForBuilding(activeBuilding?.id);
-const {data:floors,isLoading } = useGetAllFloorsRoomsForBuilding(activeBuilding?.id.toString() || "");
+  if (isLoading) {
+    return <GlobalLoading title="Floors" />
+  }
 
-// const {data:rooms} = useGetRoomsForFloor(activeBuilding?.id);
-
-if(isLoading){
-  return <GlobalLoading title="Floors"/>
-}
-
+  const filteredFloors = selectedFloor === "all"
+    ? floors
+    : floors.filter(floor => floor.id.toString() === selectedFloor);
 
   return (
     <div className="space-y-4">
-      {floors.map((floor,index) => (
-        <FloorItem key={index+floor.id} floor={floor} />
+      <div className="flex gap-4 mb-4">
+        <div className="w-[200px]">
+          <Select value={selectedFloor} onValueChange={setSelectedFloor}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Floor" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Floors</SelectItem>
+              {floors.map((floor) => (
+                <SelectItem key={floor.id} value={floor.id.toString()}>
+                  {floor.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="w-[200px]">
+          <Select value={roomStatus} onValueChange={value => setRoomStatus(value as "all" | "vacant" | "rented")}>
+            <SelectTrigger>
+              <SelectValue placeholder="Room Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Rooms</SelectItem>
+              <SelectItem value="vacant">Vacant</SelectItem>
+              <SelectItem value="rented">Rented</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      {filteredFloors.map((floor, index) => (
+        <FloorItem key={index + floor.id} floor={floor} roomStatus={roomStatus} />
       ))}
       <AddFloorDialog />
     </div>
@@ -89,8 +124,9 @@ rooms
  * @returns 
  */
 
-function FloorItem({ floor }: { floor: FloorWithRooms }) {
+function FloorItem({ floor, roomStatus }: { floor: FloorWithRooms, roomStatus: "all" | "vacant" | "rented" }) {
   const [isOpen, setIsOpen] = useState(false)
+  const { data: rooms, isLoading } = useGetRoomsForFloorWithStatus(floor.id.toString(), roomStatus);
 
   return (
     <div className="rounded-lg border">
@@ -100,33 +136,37 @@ function FloorItem({ floor }: { floor: FloorWithRooms }) {
             <div className="flex items-center gap-2">
               {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
               <h3 className="font-semibold">{floor.name}</h3>
-              <Badge variant="outline">{floor.rooms.length} Rooms</Badge>
+              <Badge variant="outline">{rooms ? rooms.length : 0} Rooms</Badge>
             </div>
             <AddRoomDialog floorId={floor.id.toString()} />
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div className="p-4 pt-0 grid gap-2">
-            {floor.rooms.map((room) => (
-              <div key={room.id} className="flex items-center justify-between p-2 rounded-md hover:bg-muted">
-                <div className="flex items-center gap-4">
-                  <span className="font-medium">Room {room.room_number}</span>
-                  <Badge
-                    variant={
-                      room.room_status === "occupied" ? "default" : room.room_status === "vacant" ? "secondary" : "destructive"
-                    }
-                  >
-                    {room.room_status.charAt(0).toUpperCase() + room.room_status.slice(1)}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    Size: {room.room_size}m²
-                  </span>
+            {isLoading ? (
+              <div>Loading rooms...</div>
+            ) : (
+              rooms && rooms.length > 0 ? rooms.map((room: any) => (
+                <div key={room.id} className="flex items-center justify-between p-2 rounded-md hover:bg-muted">
+                  <div className="flex items-center gap-4">
+                    <span className="font-medium">Room {room.room_number}</span>
+                    <Badge
+                      variant={
+                        room.room_status === "occupied" ? "default" : "secondary"
+                      }
+                    >
+                      {room.room_status === "occupied" ? "Rented" : "Vacant"}
+                    </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      Size: {room.room_size}m²
+                    </span>
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {room.room_status === "occupied" ? "Rented" : "Available"}
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  {room.room_status === "occupied" ? "Occupied" : "Available"}
-                </div>
-              </div>
-            ))}
+              )) : <div>No rooms found.</div>
+            )}
           </div>
         </CollapsibleContent>
       </Collapsible>

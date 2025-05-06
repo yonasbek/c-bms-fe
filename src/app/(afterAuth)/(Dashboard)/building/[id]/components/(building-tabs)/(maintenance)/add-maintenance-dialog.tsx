@@ -59,7 +59,7 @@ export function AddMaintenanceDialog({ trigger }: AddMaintenanceDialogProps) {
       request_status: "pending",
     },
   });
-
+console.log('Roomss',rooms)
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       await mutation.mutateAsync(data);
@@ -127,7 +127,7 @@ export function AddMaintenanceDialog({ trigger }: AddMaintenanceDialogProps) {
                       <option value="">Select a room</option>
                       {rooms?.data?.map((room) => (
                         <option key={room.id} value={room.id}>
-                          {room.room_number} - {room.name}
+                          {room.floor?.name ?? 'No Floor'} - {room.name}
                         </option>
                       ))}
                     </select>

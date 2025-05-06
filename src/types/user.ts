@@ -1,4 +1,4 @@
-import { BuildingType } from "./building";
+import { Building } from "./building";
 
 export interface User {
     id: string;
@@ -17,11 +17,12 @@ export interface TenantUser extends User {
 export interface BuildingUserType {
     id: number;
     buildingId: number;
-    building: BuildingType;
+    building: Building;
     userId: number;
     user: TenantUser;
     created_at: string;
     modified_at: string;
     is_active: boolean;
+    tin_number: string | null;
 }
 

@@ -48,7 +48,17 @@ const formSchema = z.object({
   rate_per_sqm: z.number().min(0, "Rate must be positive"),
   room_size: z.number().min(1, "Room size must be at least 1m²"),
   monthly_rent: z.number().optional(), // This will be calculated
-})
+}).refine(
+  (data) => {
+    const startDate = new Date(data.start_date);
+    const endDate = new Date(data.end_date);
+    return endDate > startDate;
+  },
+  {
+    message: "End date must be after start date",
+    path: ["end_date"], // This shows the error on the end_date field
+  }
+);
 
 type ContractFormValues = z.infer<typeof formSchema>
 
@@ -59,18 +69,33 @@ export function AddContractDialog() {
   const { data: tenants } = useGetAllTenantUsersForABuilding(activeBuilding?.id?.toString() || "")
   const { mutate: createContract, isPending: isCreating } = useCreateContract()
 
-  // Get all available rooms (not occupied)
-  const availableRooms = floors?.flatMap(floor => 
-    floor.rooms.filter(room => room.room_status === "vacant")
-  ) || []
+  // Get all available rooms (not occupied) and organize them by floor
+  const availableRooms = floors?.reduce((acc, floor) => {
+    const vacantRooms = floor.rooms.filter(room => room.room_status === "vacant");
+    if (vacantRooms.length > 0) {
+      acc.push({
+        floorName: floor.name,
+        rooms: vacantRooms.map(room => ({
+          ...room,
+          displayName: `Floor ${floor.name} - Room ${room.room_number}`
+        }))
+      });
+    }
+    return acc;
+  }, [] as { floorName: string; rooms: Array<any> }[]) || [];
+
+  // Sort rooms by floor name and room number
+  const sortedAvailableRooms = availableRooms
+    .sort((a, b) => a.floorName.localeCompare(b.floorName))
+    .flatMap(floor => floor.rooms.sort((a, b) => a.room_number - b.room_number));
 
   const form = useForm<ContractFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       tenant_id: 0,
       room_id: 0,
-      start_date: new Date().toISOString(),
-      end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 year from now
+      start_date: "",
+      end_date: "",
       rate_per_sqm: 0,
       room_size: 0,
       monthly_rent: 0,
@@ -84,12 +109,15 @@ export function AddContractDialog() {
 
   // Update room size when a room is selected
   const handleRoomSelect = (roomId: string) => {
-    const selectedRoom = availableRooms.find(room => room.id.toString() === roomId)
+    const selectedRoom = sortedAvailableRooms.find(room => room.id.toString() === roomId)
     if (selectedRoom) {
       form.setValue("room_id", Number(roomId))
       form.setValue("room_size", selectedRoom.room_size)
     }
   }
+
+  // Add this after form initialization
+  const startDate = form.watch("start_date")
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -144,15 +172,28 @@ export function AddContractDialog() {
                   <Select onValueChange={handleRoomSelect} value={field.value?.toString()}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a room" />
+                        <SelectValue placeholder="Select a vacant room" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {availableRooms.map((room) => (
-                        <SelectItem key={room.id} value={room.id.toString()}>
-                          Room {room.room_number} ({room.room_size}m²)
+                      {sortedAvailableRooms.length === 0 ? (
+                        <SelectItem disabled value="no-rooms">
+                          No vacant rooms available
                         </SelectItem>
-                      ))}
+                      ) : (
+                        sortedAvailableRooms.map((room) => (
+                          <SelectItem 
+                            key={room.id} 
+                            value={room.id.toString()}
+                            className="flex items-center justify-between"
+                          >
+                            <span>{room.displayName}</span>
+                            <span className="text-sm text-muted-foreground ml-2">
+                              ({room.room_size}m²)
+                            </span>
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -188,12 +229,18 @@ export function AddContractDialog() {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={new Date(field.value)}
+                        selected={field.value ? new Date(field.value) : undefined}
                         onSelect={(date: Date | undefined) => {
                           if (date) {
                             field.onChange(date.toISOString())
+                            // Reset end date if it's before the new start date
+                            const endDate = form.getValues("end_date")
+                            if (endDate && new Date(endDate) <= date) {
+                              form.setValue("end_date", "")
+                            }
                           }
                         }}
+                        disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                         initialFocus
                       />
                     </PopoverContent>
@@ -210,14 +257,15 @@ export function AddContractDialog() {
                 <FormItem className="flex flex-col">
                   <FormLabel>End Date</FormLabel>
                   <Popover>
-                    <PopoverTrigger asChild>
+                    <PopoverTrigger asChild disabled={!startDate}>
                       <FormControl>
                         <Button
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            (!field.value || !startDate) && "text-muted-foreground"
                           )}
+                          disabled={!startDate}
                         >
                           {field.value ? (
                             format(new Date(field.value), "PPP")
@@ -231,12 +279,16 @@ export function AddContractDialog() {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={new Date(field.value)}
+                        selected={field.value ? new Date(field.value) : undefined}
                         onSelect={(date: Date | undefined) => {
                           if (date) {
                             field.onChange(date.toISOString())
                           }
                         }}
+                        disabled={(date) => 
+                          !startDate || // Disable all dates if no start date
+                          date <= new Date(startDate) // Disable dates before or equal to start date
+                        }
                         initialFocus
                       />
                     </PopoverContent>
