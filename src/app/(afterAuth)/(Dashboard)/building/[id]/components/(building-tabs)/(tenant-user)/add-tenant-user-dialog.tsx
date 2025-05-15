@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../../../../../../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "../../../../../../../../components/ui/dialog"
 import { 
   Form, 
   FormControl, 
@@ -19,13 +19,13 @@ import {
   FormLabel, 
   FormMessage,
   FormDescription
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "../../../../../../../../components/ui/form"
+import { Input } from "../../../../../../../../components/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { useCreateTenantUser } from "@/store/server/tenant-user"
-import { CreateTenantUserData } from "@/services/tenant"
+import { useCreateTenantUser } from "../../../../../../../../store/server/tenant-user"
+import { CreateTenantUserData } from "../../../../../../../../services/tenant"
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

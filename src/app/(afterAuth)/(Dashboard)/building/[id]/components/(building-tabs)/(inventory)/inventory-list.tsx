@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "../../../../../../../../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../../../../../../components/ui/card";
 import { useGetAllInventoryForBuilding } from "@/store/server/inventory"; // Assuming you have a hook to fetch inventory
-import GlobalLoading from "@/components/global-loading";
+import GlobalLoading from "../../../../../../../../components/global-loading";
 import { AddItemDialog } from "./add-item"; // Import the AddItemDialog
 import { AddInventoryDialog } from "./add-inventory"
 import { useBuildingStore } from "@/store/buildings"

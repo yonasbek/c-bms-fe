@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../../../../../../components/ui/collapsible";
+import { Badge } from "../../../../../../../../components/ui/badge";
 import { AddContractDialog } from "./add-contract-dialog";
 import { GetContractsForTenant } from "@/store/server/contract";
 import { ContractWithDetails } from "@/types/contract";

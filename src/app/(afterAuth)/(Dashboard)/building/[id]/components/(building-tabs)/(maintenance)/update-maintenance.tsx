@@ -3,12 +3,12 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { useUpdateMaintenance } from "@/store/server/maintaince"
+import { Button } from "../../../../../../../../components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../../../../../../../../components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../../../../components/ui/select"
+import { Textarea } from "../../../../../../../../components/ui/textarea"
+import { Label } from "../../../../../../../../components/ui/label"
+import { useUpdateMaintenance } from "../../../../../../../../store/server/maintaince"
 interface UpdateMaintenanceStatusProps {
   requestId: string
   currentStatus: string

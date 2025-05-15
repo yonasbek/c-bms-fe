@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { Badge } from "@/components/ui/badge"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../../../../../../components/ui/collapsible"
+import { Badge } from "../../../../../../../../components/ui/badge"
 import { AddFloorDialog } from "./add-floor-dialog"
 import { AddRoomDialog } from "./add-room-dialog"
 import { useGetAllFloorsRoomsForBuilding, useGetRoomsForFloorWithStatus } from "@/store/server/floor"
 import { useBuildingStore } from "@/store/buildings"
-import GlobalLoading from "@/components/global-loading"
+import GlobalLoading from "../../../../../../../../components/global-loading"
 import { FloorWithRooms } from "@/types/floor"
 import {
   Select,

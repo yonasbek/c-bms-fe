@@ -1,13 +1,13 @@
 "use client"
 
 import { FileText, Calendar, DollarSign, Receipt, ExternalLink } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useGetAllPayments } from "@/store/server/payment"
-import GlobalLoading from "@/components/global-loading"
+import { Badge } from "../../../../../../../../components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../../../../../../components/ui/card"
+import { useGetAllPayments } from "../../../../../../../../store/server/payment"
+import GlobalLoading from "../../../../../../../../components/global-loading"
 import { AddPaymentDialog } from "./add-payment-dialog"
 import { format } from "date-fns"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../../../../../../components/ui/button"
 
 type PaymentStatus = "paid" | "pending" | "overdue" | "partial"
 

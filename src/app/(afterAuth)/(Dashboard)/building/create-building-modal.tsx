@@ -7,7 +7,7 @@ import { Input } from '../../../../components/ui/input'
 import { Button } from '../../../../components/ui/button'
 import { useModalStore } from '@/store/modal'
 import { useForm } from 'react-hook-form'
-import { userRequest } from '@/lib/requests'
+import { userRequest } from '../../../../lib/requests'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
@@ -46,7 +46,7 @@ const CreateBuildingModal = () => {
       
       // Then explicitly update the cache with the new data
       if (Array.isArray(existingBuildings)) {
-        queryClient.setQueryData(['buildings'], (oldData) => {
+        queryClient.setQueryData(['buildings'], (oldData: any) => {
           const newData = Array.isArray(oldData) ? [...oldData, data.data] : [data.data];
           console.log('Updated buildings cache:', newData);
           return newData;

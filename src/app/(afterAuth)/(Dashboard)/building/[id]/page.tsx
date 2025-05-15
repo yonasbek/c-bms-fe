@@ -8,7 +8,7 @@ import { BuildingOverview } from "./components/(building-tabs)/(building-overvie
 import { useGetBuildingInfo } from "@/store/server/buildings"
 import { MaintenanceList } from "./components/(building-tabs)/(maintenance)/maintenance-list"
 import { TenantsList } from "./components/(building-tabs)/(tenant-user)/tenant-list"
-import GlobalLoading from "@/components/global-loading"
+import GlobalLoading from "../../../../../components/global-loading"
 import { AddFloorDialog } from "./components/(building-tabs)/(floors-room)/add-floor-dialog"
 import { ContractsList } from "./components/(building-tabs)/(contracts)/contracts-list"
 import {InventoryList} from "./components/(building-tabs)/(inventory)/inventory-list"

@@ -2,12 +2,12 @@
 
 import { useState } from "react"
 import { FileText, Calendar, Building2 } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { useGetTenantUsersByContractStatus } from "@/store/server/tenant-user"
-import { useBuildingStore } from "@/store/buildings"
-import GlobalLoading from "@/components/global-loading"
+import { Badge } from "../../../../../../../../components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../../../../../../components/ui/card"
+import { Avatar, AvatarFallback } from "../../../../../../../../components/ui/avatar"
+import { useGetTenantUsersByContractStatus } from "../../../../../../../../store/server/tenant-user"
+import { useBuildingStore } from "../../../../../../../../store/buildings"
+import GlobalLoading from "../../../../../../../../components/global-loading"
 import { AddTenantUserDialog } from "./add-tenant-user-dialog"
 import {
   Select,
@@ -15,7 +15,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "../../../../../../../../components/ui/select"
 
 type ContractStatus = "active" | "expiring" | "expired"
 

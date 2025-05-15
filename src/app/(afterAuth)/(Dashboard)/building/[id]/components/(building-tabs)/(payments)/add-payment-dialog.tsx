@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../../../../../../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "../../../../../../../../components/ui/dialog"
 import { 
   Form, 
   FormControl, 
@@ -18,22 +18,22 @@ import {
   FormItem, 
   FormLabel, 
   FormMessage 
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "../../../../../../../../components/ui/form"
+import { Input } from "../../../../../../../../components/ui/input"
 import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "../../../../../../../../components/ui/select"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { useCreatePayment } from "@/store/server/payment"
-import { useBuildingStore } from "@/store/buildings"
-import { useGetAllTenantUsersForABuilding } from "@/store/server/tenant-user"
-import { userRequest } from "@/lib/requests"
+import { useCreatePayment } from "../../../../../../../../store/server/payment"
+import { useBuildingStore } from "../../../../../../../../store/buildings"
+import { useGetAllTenantUsersForABuilding } from "../../../../../../../../store/server/tenant-user"
+import { userRequest } from "../../../../../../../../lib/requests"
 
 const formSchema = z.object({
   contractId: z.string().min(1, "Please select a contract"),
