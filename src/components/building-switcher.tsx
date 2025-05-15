@@ -36,7 +36,7 @@ export function BuildingSwitcher({ buildings }: BuildingSwitcherProps) {
   // Move the initialization logic to useEffect
   useEffect(() => {
     if (!activeBuilding && buildings.length > 0) {
-      handleBuildingSwitch(buildings[0].id);
+      handleBuildingSwitch(buildings[0]?.id as string);
     }
   }, [activeBuilding, buildings]);
 
@@ -80,7 +80,7 @@ export function BuildingSwitcher({ buildings }: BuildingSwitcherProps) {
             {buildings.map((building, index) => (
               <DropdownMenuItem
                 key={building.name + index}
-                onClick={() => handleBuildingSwitch(building.id)}
+                onClick={() => handleBuildingSwitch(building?.id as string)}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
