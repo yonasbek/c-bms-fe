@@ -10,17 +10,17 @@ export async function login(username:string, password:string) {
       localStorage.setItem('token', token);
     }
     return res.data;
-  } catch (error:AxiosError) {
+  } catch (error:any) {
     // Customize error handling as needed
     throw error.response?.data || error;
   }
 }
 
-export async function forgotPassword(email) {
+export async function forgotPassword(email: string) {
   try {
     const res = await publicRequest.post('/auth/forgot-password', { email });
     return res.data;
-  } catch (error) {
+  } catch (error: any) {
     throw error.response?.data || error;
   }
 }
@@ -34,7 +34,7 @@ export async function getProtectedData() {
   try {
     const res = await userRequest.get('/auth/protected');
     return res.data;
-  } catch (error) {
+  } catch (error: any) {
     throw error.response?.data || error;
   }
 }

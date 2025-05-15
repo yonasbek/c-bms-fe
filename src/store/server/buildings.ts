@@ -1,5 +1,5 @@
 import { userRequest } from "@/lib/requests";
-import { BuildingType } from "@/types/building";
+import { Building } from "@/types/building";
 import { useQuery } from "@tanstack/react-query";
 
 const getBuildingInfo = async (buildingID: string) => {
@@ -9,7 +9,7 @@ const getBuildingInfo = async (buildingID: string) => {
 
 // Convert to a proper React hook by naming it with "use" prefix
 export const useGetBuildings = () => {
-  return useQuery<BuildingType[]>({
+  return useQuery<Building[]>({
     queryKey: ['buildings'],
     queryFn: async () => {
       const response = await userRequest.get('/building');
@@ -23,7 +23,7 @@ export const useGetBuildings = () => {
 };
 
 export const useGetBuildingInfo = (buildingID: string) => {
-    return useQuery<BuildingType>({
+    return useQuery<Building>({
     queryKey: ["building", buildingID],
     queryFn: () => getBuildingInfo(buildingID),
    

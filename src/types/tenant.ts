@@ -1,3 +1,5 @@
+import { Contract } from "./contract";
+
 export interface Building {
   id: number;
   name: string;

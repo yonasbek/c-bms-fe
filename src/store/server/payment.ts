@@ -42,7 +42,7 @@ export const useCreatePayment = () => {
       queryClient.invalidateQueries({ queryKey: ["contract-payments", variables.contractId] });
       queryClient.invalidateQueries({ queryKey: ["payments"] });
     },
-    onError: (error: AxiosError) => {
+    onError: (error: any) => {
       toast.error(`Failed to add payment: ${error.response?.data?.message || error.message}`);
     },
   });
@@ -61,7 +61,7 @@ export const useUpdatePayment = () => {
       }
       queryClient.invalidateQueries({ queryKey: ["payments"] });
     },
-    onError: (error: AxiosError) => {
+    onError: (error: any) => {
       toast.error(`Failed to update payment: ${error.response?.data?.message || error.message}`);
     },
   });
@@ -78,7 +78,7 @@ export const useDeletePayment = () => {
       queryClient.invalidateQueries({ queryKey: ["contract-payments", variables.contractId] });
       queryClient.invalidateQueries({ queryKey: ["payments"] });
     },
-    onError: (error: AxiosError) => {
+    onError: (error: any) => {
       toast.error(`Failed to delete payment: ${error.response?.data?.message || error.message}`);
     },
   });

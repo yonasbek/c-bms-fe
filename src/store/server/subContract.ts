@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { userRequest } from "@/lib/requests";
 import { toast } from "sonner";
 import { CreateSubContractType, SubContractType } from "@/types/subContract";
-import { BuildingType } from "@/types/building";
+import { Building } from "@/types/building";
 
 
 export const useCreateSubContract = () => {
@@ -63,7 +63,7 @@ export const useGetAllSubContractForBuilding = (buildingId: string) => {
 export const useGetAllBuildingForSubContract = () => {
   return useQuery({
     queryKey: ['sub-contract', 'building'],
-    queryFn: () => userRequest.get<BuildingType[]>('/building'),
+    queryFn: () => userRequest.get<Building[]>('/building'),
   });
 };
 
