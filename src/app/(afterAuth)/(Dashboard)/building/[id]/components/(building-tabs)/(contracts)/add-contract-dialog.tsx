@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../../../../../../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "../../../../../../../../components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -18,13 +18,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "../../../../../../../../components/ui/form"
+import { Input } from "../../../../../../../../components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "../../../../../../../../components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "../../../../../../../../components/ui/popover"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
@@ -34,11 +34,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { useGetAllFloorsRoomsForBuilding } from "@/store/server/floor"
-import { useGetAllTenantUsersForABuilding } from "@/store/server/tenant-user"
-import { useBuildingStore } from "@/store/buildings"
-import { useCreateContract } from "@/store/server/contract"
+} from "../../../../../../../../components/ui/select"
+import { useGetAllFloorsRoomsForBuilding } from "../../../../../../../../store/server/floor"
+import { useGetAllTenantUsersForABuilding } from "../../../../../../../../store/server/tenant-user"
+import { useBuildingStore } from "../../../../../../../../store/buildings"
+import { useCreateContract } from "../../../../../../../../store/server/contract"
 
 const formSchema = z.object({
   tenant_id: z.number(),
