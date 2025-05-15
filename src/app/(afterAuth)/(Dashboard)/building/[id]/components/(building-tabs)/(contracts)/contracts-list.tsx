@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input"
 import { useBuildingStore } from "@/store/buildings"
 import GlobalLoading from "@/components/global-loading"
 import { AddContractDialog } from "./add-contract-dialog"
-import { useGetBuildingContracts } from "@/store/server/contract"
+import { useGetBuildingContractsByStatusAndPayment } from "@/store/server/contract"
 import { useGetContractDocuments, useUploadContractDocuments } from "@/store/server/contract-document"
 import ContractType from "@/types/contract"
 import PaymentType from "@/types/payment"
@@ -33,6 +33,13 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { ContractDocument } from "@/types/contract"
 import { useQueryClient } from "@tanstack/react-query"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const contractStatusColors = {
   active: "bg-green-100 text-green-800",
@@ -120,16 +127,45 @@ function UploadDocumentsDialog({ contractId }: { contractId: number }) {
 
 export function ContractsList() {
   const { activeBuilding } = useBuildingStore();
-  const { data: contracts, isLoading, isError } = useGetBuildingContracts(activeBuilding?.id?.toString() || "");
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'terminated'>('all');
+  const [paymentFilter, setPaymentFilter] = useState<'all' | 'paid' | 'unpaid'>('all');
+
+  const { data: contracts, isLoading, isError } = useGetBuildingContractsByStatusAndPayment(
+    activeBuilding?.id?.toString() || "",
+    statusFilter,
+    paymentFilter
+  );
 
   if (isLoading) return <GlobalLoading title="Contracts"/>;
   if (isError) return <div>Error loading contracts</div>;
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Contracts</h2>
-        <AddContractDialog />
+        <div className="flex gap-4 items-center">
+          <Select value={statusFilter} onValueChange={value => setStatusFilter(value as 'all' | 'active' | 'terminated')}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="terminated">Terminated</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={paymentFilter} onValueChange={value => setPaymentFilter(value as 'all' | 'paid' | 'unpaid')}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Payment" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Payments</SelectItem>
+              <SelectItem value="paid">Paid</SelectItem>
+              <SelectItem value="unpaid">Unpaid</SelectItem>
+            </SelectContent>
+          </Select>
+          <AddContractDialog />
+        </div>
       </div>
 
       {contracts && contracts.length > 0 ? (
@@ -240,7 +276,7 @@ function ContractCard({ contract }: any) {
                   </span>
                 </div>
                 <span className="font-medium">
-                  ${contract.rate_per_sqm?.toFixed(2) || "0.00"}
+                  {contract.rate_per_sqm?.toFixed(2) || "0.00"} ETB
                 </span>
               </div>
               <div className="flex items-center justify-between">
@@ -262,7 +298,7 @@ function ContractCard({ contract }: any) {
                   </span>
                 </div>
                 <span className="font-medium">
-                  ${contract.monthly_rent?.toFixed(2) || "0.00"}
+                  {contract.monthly_rent?.toFixed(2) || "0.00"} ETB
                 </span>
               </div>
               <div className="flex items-center justify-between">
@@ -273,7 +309,7 @@ function ContractCard({ contract }: any) {
                   </span>
                 </div>
                 <span className="font-medium">
-                  ${((contract.monthly_rent || 0) * 3).toFixed(2)}
+                  {((contract.monthly_rent || 0) * 3).toFixed(2)} ETB
                 </span>
               </div>
               <div className="flex items-center justify-between">

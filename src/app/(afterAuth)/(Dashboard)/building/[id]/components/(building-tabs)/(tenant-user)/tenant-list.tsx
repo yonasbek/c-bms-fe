@@ -1,13 +1,21 @@
 "use client"
 
+import { useState } from "react"
 import { FileText, Calendar, Building2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { useGetAllTenantUsersForABuilding } from "@/store/server/tenant-user"
+import { useGetTenantUsersByContractStatus } from "@/store/server/tenant-user"
 import { useBuildingStore } from "@/store/buildings"
 import GlobalLoading from "@/components/global-loading"
 import { AddTenantUserDialog } from "./add-tenant-user-dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 type ContractStatus = "active" | "expiring" | "expired"
 
@@ -41,18 +49,32 @@ type TenantWithContract = {
 
 export function TenantsList() {
   const { activeBuilding } = useBuildingStore();
-  const { data: tenants, isLoading, isError } = useGetAllTenantUsersForABuilding(activeBuilding?.id.toString() || "");
+  const [contractFilter, setContractFilter] = useState<'all' | 'active' | 'terminated' | 'no-contract'>('all');
+  const { data: tenants, isLoading, isError } = useGetTenantUsersByContractStatus(activeBuilding?.id.toString() || "", contractFilter);
 
   if (isLoading) return <GlobalLoading title="Tenants" />;
   if (isError) return <div>Error loading tenants</div>;
 
-  const typedTenants = tenants as unknown as TenantWithContract[];
+  const typedTenants = tenants;
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Tenants</h2>
-        <AddTenantUserDialog />
+        <div className="flex gap-4 items-center">
+          <Select value={contractFilter} onValueChange={value => setContractFilter(value as 'all' | 'active' | 'terminated' | 'no-contract')}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Filter by Contract" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="active">Has Active Contract</SelectItem>
+              <SelectItem value="terminated">Terminated Contract</SelectItem>
+              <SelectItem value="no-contract">No Contract</SelectItem>
+            </SelectContent>
+          </Select>
+          <AddTenantUserDialog />
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -70,7 +92,7 @@ export function TenantsList() {
                       <CardTitle className="text-base">{tenant.user.name}</CardTitle>
                       <CardDescription>{tenant.user.email}</CardDescription>
                       <CardDescription className="mt-1">
-                        TIN: {tenant.tin_number || "No TIN number"}
+                        TIN: {tenant.tin_number  || "No TIN number"}
                       </CardDescription>
                     </div>
                   </div>
@@ -108,7 +130,7 @@ export function TenantsList() {
                             </div>
                             <Badge 
                               variant="outline" 
-                              className={contractStatusColors[contract.contract_status] || "bg-gray-100 text-gray-800"}
+                              className={contractStatusColors[contract.contract_status as ContractStatus] || "bg-gray-100 text-gray-800"}
                             >
                               {contract.contract_status.charAt(0).toUpperCase() + contract.contract_status.slice(1)}
                             </Badge>
@@ -124,7 +146,7 @@ export function TenantsList() {
                           
                           <div className="flex items-center justify-between text-sm">
                             <span className="text-muted-foreground">Monthly Rent</span>
-                            <span className="font-medium">${contract.monthly_rent}</span>
+                            <span className="font-medium">{contract.monthly_rent} ETB</span>
                           </div>
                         </div>
                       ))}

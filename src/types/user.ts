@@ -23,5 +23,6 @@ export interface BuildingUserType {
     created_at: string;
     modified_at: string;
     is_active: boolean;
+    tin_number: string | null;
 }
 

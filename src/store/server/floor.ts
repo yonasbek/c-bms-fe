@@ -54,8 +54,18 @@ export const useGetAllFloorsRoomsForBuilding = (buildingId: string) => {
   const error = floorsQuery.error || roomQueries.find(query => query.error)?.error;
 
   const floorsWithRooms: FloorWithRooms[] = floors.map((floor, index) => ({
-    ...floor,
-    rooms: roomQueries[index]?.data?.data || []
+    id: Number(floor.id),
+    name: floor.name,
+    buildingId: Number(floor.buildingId),
+    is_active: (floor as any).is_active ?? true,
+    created_at: (floor as any).created_at ?? floor.createdAt ?? '',
+    modified_at: (floor as any).modified_at ?? floor.updatedAt ?? '',
+    rooms: (roomQueries[index]?.data?.data || []).map((room: any) => ({
+      id: Number(room.id),
+      room_number: room.room_number,
+      room_status: room.room_status === 'occupied' ? 'occupied' : 'vacant',
+      room_size: Number(room.room_size) || 0,
+    })),
   }));
 
 
@@ -76,6 +86,23 @@ export const useGetRoomsForFloor = (floorId: string) => {
   return useQuery({ 
     queryKey: ['rooms', floorId],
     queryFn: () => userRequest.get<RoomType[]>(`/room/search/floorId/${floorId}`),
+  });
+};
+
+// New hook: fetch rooms for a floor with a given status
+export const useGetRoomsForFloorWithStatus = (floorId: string, status: "vacant" | "rented" | "all") => {
+  return useQuery({
+    queryKey: ["rooms", floorId, status],
+    queryFn: async () => {
+      if (status === "all") {
+        const res = await userRequest.get<RoomType[]>(`/room/search/floorId/${floorId}`);
+        return res.data;
+      } else {
+        const res = await userRequest.get<RoomType[]>(`/room/search/room_status/${status}`);
+        // room.floorId may be string or number, so use loose equality
+        return res.data.filter((room: RoomType) => room.floorId == floorId);
+      }
+    },
   });
 };
 

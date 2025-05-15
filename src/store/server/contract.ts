@@ -1,9 +1,11 @@
 import { userRequest } from "@/lib/requests";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, useQueries } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import ContractType, { Contract, ContractWithDetails } from "@/types/contract";
+import { useGetPaymentsForContract } from "@/store/server/payment";
+import { isContractPaid } from "@/lib/utils";
 
 // Get all contracts for a building
 export const useGetBuildingContracts = (buildingId: string) => {
@@ -132,5 +134,34 @@ export const GetContractsForTenant = (tenantId: number) => {
     refetch: async () => {
       await contractsQuery.refetch();
     }
+  };
+};
+
+export const useGetBuildingContractsByStatusAndPayment = (
+  buildingId: string,
+  contractStatus: 'all' | 'active' | 'terminated',
+  paymentStatus: 'all' | 'paid' | 'unpaid'
+) => {
+  // Always fetch all contracts for the building
+  const contractsQuery = useGetBuildingContracts(buildingId);
+  const contracts = contractsQuery.data || [];
+
+  // Filter contracts by status (frontend)
+  const statusFilteredContracts = contractStatus === 'all'
+    ? contracts
+    : contracts.filter((c: any) => c.contract_status === contractStatus);
+
+  // For payment filtering, use the isContractPaid utility function
+  const filteredContracts = statusFilteredContracts.filter((contract: any) => {
+    if (paymentStatus === 'all') return true;
+    const isPaid = isContractPaid(contract.payments || []);
+    return paymentStatus === 'paid' ? isPaid : !isPaid;
+  });
+
+  return {
+    data: filteredContracts,
+    isLoading: contractsQuery.isLoading,
+    isError: contractsQuery.isError,
+    error: contractsQuery.error,
   };
 };

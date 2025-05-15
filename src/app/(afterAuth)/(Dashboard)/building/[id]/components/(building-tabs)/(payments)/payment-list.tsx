@@ -95,7 +95,7 @@ export function PaymentsList() {
                         </div>
                         <div className="flex justify-between">
                           <span>Monthly Rent:</span>
-                          <span className="font-medium">${payment.contract.monthly_rent}</span>
+                          <span className="font-medium">{payment.contract.monthly_rent} ETB</span>
                         </div>
                       </div>
                     ) : (

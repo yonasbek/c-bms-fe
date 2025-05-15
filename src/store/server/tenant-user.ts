@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 
 
 interface TenantWithContract extends BuildingUserType {
+  tin_number: string | null;
   contracts: ContractType[];
 }
 
@@ -124,6 +125,54 @@ export const useCreateTenantUser = () => {
       );
     },
   });
+};
+
+export const useGetTenantUsersByContractStatus = (buildingId: string, status: 'active' | 'terminated' | 'no-contract' | 'all') => {
+  // Fetch all tenants for the building
+  const tenantsQuery = useQuery({
+    queryKey: ["tenant-user", buildingId],
+    queryFn: () => userRequest.get<BuildingUserType[]>(`/building-tenant/search/buildingId/${buildingId}`),
+    enabled: !!buildingId,
+  });
+
+  // Fetch contracts by status if not 'no-contract' or 'all'
+  const contractStatus = status === 'all' ? undefined : status;
+  const contractQueries = useQueries({
+    queries: (tenantsQuery.data?.data || []).map((tenant) => ({
+      queryKey: ["tenant-contract", tenant.userId, contractStatus],
+      queryFn: () =>
+        contractStatus && contractStatus !== 'no-contract'
+          ? userRequest.get<ContractType[]>(`/contracts/search/contract_status/${contractStatus}`)
+              .then(res => res.data.filter((c: ContractType) => c.user.id === tenant.userId))
+          : userRequest.get<ContractType[]>(`/contracts/search/userId/${tenant.userId}`).then(res => res.data),
+      enabled: !!tenant.userId && !!buildingId,
+    })),
+  });
+
+  // Combine tenant and contract data
+  let tenantsWithContracts: TenantWithContract[] = [];
+  if (tenantsQuery.data?.data) {
+    tenantsWithContracts = tenantsQuery.data.data.map((tenant, index) => ({
+      ...tenant,
+      contracts: contractQueries[index]?.data || [],
+    }));
+    if (status === 'no-contract') {
+      tenantsWithContracts = tenantsWithContracts.filter(t => (t.contracts.length === 0));
+    } else if (status === 'active' || status === 'terminated') {
+      tenantsWithContracts = tenantsWithContracts.filter(t => t.contracts.some(c => c.contract_status === status));
+    }
+  }
+
+  return {
+    data: tenantsWithContracts,
+    isLoading: tenantsQuery.isLoading || contractQueries.some(q => q.isLoading),
+    isError: tenantsQuery.isError || contractQueries.some(q => q.isError),
+    error: tenantsQuery.error || contractQueries.find(q => q.error)?.error,
+    refetch: async () => {
+      await tenantsQuery.refetch();
+      await Promise.all(contractQueries.map(q => q.refetch()));
+    }
+  };
 };
 
 /**

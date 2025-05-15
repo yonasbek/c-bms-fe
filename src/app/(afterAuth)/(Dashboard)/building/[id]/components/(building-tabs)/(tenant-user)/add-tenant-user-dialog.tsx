@@ -32,8 +32,9 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   phoneNumber: z
     .string()
-    .min(10, "Phone number must be at least 10 digits")
-    .regex(/^\d+$/, "Phone number must contain only digits"),
+    .min(10, "Phone number must be 10 digits")
+    .max(10, "Phone number must be 10 digits")
+    .regex(/^09\d{8}$/, "Phone number must be a valid Ethiopian number starting with '09'"),
   tin_number: z.string().optional(),
   room_id: z.string(),
   start_date: z.date(),
@@ -143,13 +144,25 @@ export function AddTenantUserDialog() {
                       type="tel" 
                       {...field}
                       onChange={(e) => {
-                        // Only allow numeric input
-                        const value = e.target.value.replace(/\D/g, '');
+                        // Only allow numeric input and ensure it starts with '09'
+                        let value = e.target.value.replace(/\D/g, '');
+                        
+                        // If the user is typing and hasn't entered '09' yet, help them by adding it
+                        if (value.length > 0 && !value.startsWith('09')) {
+                          if (value.startsWith('9')) {
+                            value = '0' + value;
+                          } else if (!value.startsWith('0')) {
+                            value = '09';
+                          }
+                        }
+                        
+                        // Ensure we don't exceed 10 digits
+                        value = value.slice(0, 10);
                         field.onChange(value);
                       }}
-                      maxLength={15} // Reasonable max length for phone numbers
                     />
                   </FormControl>
+                  <FormDescription>Enter Ethiopian mobile number (e.g., 0912345678)</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -42,7 +42,17 @@ const formSchema = z.object({
   payment_from: z.string().min(1, "Payment from date is required"),
   payment_to: z.string().min(1, "Payment to date is required"),
   payment_date: z.string().min(1, "Payment date is required"),
-});
+}).refine(
+  (data) => {
+    const fromDate = new Date(data.payment_from);
+    const toDate = new Date(data.payment_to);
+    return toDate > fromDate;
+  },
+  {
+    message: "Payment to date must be after payment from date",
+    path: ["payment_to"], // This shows the error on the payment_to field
+  }
+);
 
 type PaymentFormValues = z.infer<typeof formSchema>;
 
@@ -59,11 +69,13 @@ export function AddPaymentDialog() {
       contractId: "",
       reference_number: "",
       payment_status: "paid",
-      payment_from: new Date().toISOString().split('T')[0],
-      payment_to: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
+      payment_from: "",
+      payment_to: "",
       payment_date: new Date().toISOString().split('T')[0],
     },
   })
+
+  const paymentFromDate = form.watch("payment_from")
 
   async function onSubmit(data: PaymentFormValues) {
     try {
@@ -199,7 +211,19 @@ export function AddPaymentDialog() {
                   <FormItem>
                     <FormLabel>Payment From</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} />
+                      <Input 
+                        type="date" 
+                        {...field}
+                        min={new Date().toISOString().split('T')[0]}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          // Reset payment_to if it's before the new payment_from
+                          const paymentTo = form.getValues("payment_to")
+                          if (paymentTo && paymentTo <= e.target.value) {
+                            form.setValue("payment_to", "")
+                          }
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -213,7 +237,12 @@ export function AddPaymentDialog() {
                   <FormItem>
                     <FormLabel>Payment To</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} />
+                      <Input 
+                        type="date" 
+                        {...field}
+                        disabled={!paymentFromDate}
+                        min={paymentFromDate ? new Date(new Date(paymentFromDate).getTime() + 86400000).toISOString().split('T')[0] : undefined}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
