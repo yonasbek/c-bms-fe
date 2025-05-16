@@ -1,16 +1,16 @@
 "use client"
 
 import { FileText, MoreVertical, Calendar, DollarSign, ExternalLink, Ruler, Upload } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "../../../../../../../../components/ui/button"
+import { Badge } from "../../../../../../../../components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../../../../../../components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "../../../../../../../../components/ui/dropdown-menu"
 import {
   Dialog,
   DialogContent,
@@ -18,12 +18,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { useBuildingStore } from "@/store/buildings"
-import GlobalLoading from "@/components/global-loading"
+} from "../../../../../../../../components/ui/dialog"
+import { Input } from "../../../../../../../../components/ui/input"
+import { useBuildingStore } from "../../../../../../../../store/buildings"
+import GlobalLoading from "../../../../../../../../components/global-loading"
 import { AddContractDialog } from "./add-contract-dialog"
-import { useGetBuildingContractsByStatusAndPayment } from "@/store/server/contract"
+import { useGetBuildingContractsByStatusAndPayment } from "../../../../../../../../store/server/contract"
 import { useGetContractDocuments, useUploadContractDocuments } from "@/store/server/contract-document"
 import ContractType from "@/types/contract"
 import PaymentType from "@/types/payment"
