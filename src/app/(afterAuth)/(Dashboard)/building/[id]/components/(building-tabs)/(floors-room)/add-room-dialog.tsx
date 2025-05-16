@@ -26,14 +26,14 @@ import { Input } from "../../../../../../../../components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useCreateRoom } from "@/store/server/room";
+import { useCreateRoom } from "../../../../../../../../store/server/room";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../../../../../../../components/ui/select";
 
 const formSchema = z.object({
   room_number: z.string().min(1, "Room number is required"),

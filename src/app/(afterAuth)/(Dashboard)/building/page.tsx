@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { BuildingsTable } from "./buildings-table";
 import { CreateBuildingButton } from "./create-building-button";
-import { useBuildingStore } from "@/store/buildings";
+import { useBuildingStore } from "../../../../store/buildings";
 
 export default function BuildingsPage() {
   const router = useRouter();

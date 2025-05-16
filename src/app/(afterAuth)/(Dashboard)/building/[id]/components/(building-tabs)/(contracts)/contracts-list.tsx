@@ -24,14 +24,14 @@ import { useBuildingStore } from "../../../../../../../../store/buildings"
 import GlobalLoading from "../../../../../../../../components/global-loading"
 import { AddContractDialog } from "./add-contract-dialog"
 import { useGetBuildingContractsByStatusAndPayment } from "../../../../../../../../store/server/contract"
-import { useGetContractDocuments, useUploadContractDocuments } from "@/store/server/contract-document"
-import ContractType from "@/types/contract"
-import PaymentType from "@/types/payment"
-import { isContractPaid } from "@/lib/utils"
+import { useGetContractDocuments, useUploadContractDocuments } from "../../../../../../../../store/server/contract-document"
+import ContractType from "../../../../../../../../types/contract"
+import PaymentType from "../../../../../../../../types/payment"
+import { isContractPaid } from "../../../../../../../../lib/utils"
 import { TerminateContractDialog } from "./terminate-contract-dialog"
 import { useState } from "react"
 import { toast } from "sonner"
-import { ContractDocument } from "@/types/contract"
+import { ContractDocument } from "../../../../../../../../types/contract"
 import { useQueryClient } from "@tanstack/react-query"
 import {
   Select,
@@ -39,7 +39,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "../../../../../../../../components/ui/select"
 
 const contractStatusColors = {
   active: "bg-green-100 text-green-800",

@@ -24,9 +24,9 @@ import { Input } from "../../../../../../../../components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useCreateInventory, useGetAllItems } from "@/store/server/inventory"; // Assuming you have a hook for creating inventory and additional hooks for fetching items and statuses
+import { useCreateInventory, useGetAllItems } from "../../../../../../../../store/server/inventory"; // Assuming you have a hook for creating inventory and additional hooks for fetching items and statuses
 import { toast } from "sonner";
-import { useBuildingStore } from "@/store/buildings";
+import { useBuildingStore } from "../../../../../../../../store/buildings";
 
 const formSchema = z.object({
   itemId: z.string().min(1, "Item ID is required"),

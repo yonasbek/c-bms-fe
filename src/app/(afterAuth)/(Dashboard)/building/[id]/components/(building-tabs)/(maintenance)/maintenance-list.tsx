@@ -12,14 +12,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+} from "../../../../../../../../components/ui/dropdown-menu"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../../../../components/ui/select"
 import { UpdateMaintenanceStatus } from "./update-maintenance"
 import { cn } from "../../../../../../../../lib/utils"
 import { useGetAllMaintenanceForBuilding } from "../../../../../../../../store/server/maintaince"
 import { useBuildingStore } from "../../../../../../../../store/buildings"
 import GlobalLoading from "../../../../../../../../components/global-loading"
-import { MaintenanceStatus, Priority } from "@/types/maintainance"
+import { MaintenanceStatus, Priority } from "../../../../../../../../types/maintainance"
 import { AddMaintenanceDialog } from "./add-maintenance-dialog"
 
 

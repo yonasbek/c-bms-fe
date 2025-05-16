@@ -1,7 +1,7 @@
 "use client"
 
 import { AlertTriangle } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../../../../../../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -9,10 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "../../../../../../../../components/ui/dialog"
 import { useState } from "react"
-import { useTerminateContract } from "@/store/server/contract"
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import { useTerminateContract } from "../../../../../../../../store/server/contract"
+import { DropdownMenuItem } from "../../../../../../../../components/ui/dropdown-menu"
 
 interface TerminateContractDialogProps {
   contractId: number;

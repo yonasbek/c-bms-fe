@@ -5,7 +5,7 @@ import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../
 import { Label } from '../../../../components/ui/label'
 import { Input } from '../../../../components/ui/input'
 import { Button } from '../../../../components/ui/button'
-import { useModalStore } from '@/store/modal'
+import { useModalStore } from '../../../../store/modal'
 import { useForm } from 'react-hook-form'
 import { userRequest } from '../../../../lib/requests'
 import { useMutation, useQueryClient } from '@tanstack/react-query'

@@ -6,17 +6,17 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../..
 import { Badge } from "../../../../../../../../components/ui/badge"
 import { AddFloorDialog } from "./add-floor-dialog"
 import { AddRoomDialog } from "./add-room-dialog"
-import { useGetAllFloorsRoomsForBuilding, useGetRoomsForFloorWithStatus } from "@/store/server/floor"
-import { useBuildingStore } from "@/store/buildings"
+import { useGetAllFloorsRoomsForBuilding, useGetRoomsForFloorWithStatus } from "../../../../../../../../store/server/floor"
+import { useBuildingStore } from "../../../../../../../../store/buildings"
 import GlobalLoading from "../../../../../../../../components/global-loading"
-import { FloorWithRooms } from "@/types/floor"
+import { FloorWithRooms } from "../../../../../../../../types/floor"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "../../../../../../../../components/ui/select"
 
 // // Dummy data - replace with actual data fetching
 // const floors = [

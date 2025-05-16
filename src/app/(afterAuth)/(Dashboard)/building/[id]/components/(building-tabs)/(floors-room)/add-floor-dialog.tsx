@@ -16,9 +16,9 @@ import { Input } from "../../../../../../../../components/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { useCreateFloor } from "@/store/server/floor"
+import { useCreateFloor } from "../../../../../../../../store/server/floor"
 import { toast } from 'sonner';
-import { useBuildingStore } from "@/store/buildings"
+import { useBuildingStore } from "../../../../../../../../store/buildings"
 
 
 const formSchema = z.object({

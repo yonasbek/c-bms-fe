@@ -24,7 +24,7 @@ import { Input } from "../../../../../../../../components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useCreateItem } from "@/store/server/inventory"; // Assuming you have a hook for creating inventory items
+import { useCreateItem } from "../../../../../../../../store/server/inventory"; // Assuming you have a hook for creating inventory items
 import { toast } from "sonner";
 
 const formSchema = z.object({

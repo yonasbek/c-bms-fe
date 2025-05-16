@@ -1,11 +1,11 @@
 'use client'
 
 import { use } from 'react';
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "../../../../../components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../components/ui/tabs"
 import { FloorsList } from "./components/(building-tabs)/(floors-room)/floors-list"
 import { BuildingOverview } from "./components/(building-tabs)/(building-overview)/buildings-overview"
-import { useGetBuildingInfo } from "@/store/server/buildings"
+import { useGetBuildingInfo } from "../../../../../store/server/buildings"
 import { MaintenanceList } from "./components/(building-tabs)/(maintenance)/maintenance-list"
 import { TenantsList } from "./components/(building-tabs)/(tenant-user)/tenant-list"
 import GlobalLoading from "../../../../../components/global-loading"

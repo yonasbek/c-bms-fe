@@ -24,10 +24,10 @@ import { Input } from "../../../../../../../../components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useCreateMaintenance } from "@/store/server/maintaince"; // Assuming you have a hook for creating maintenance requests
+import { useCreateMaintenance } from "../../../../../../../../store/server/maintaince"; // Assuming you have a hook for creating maintenance requests
 import { toast } from "sonner";
-import { useGetRoomsForBuilding } from "@/store/server/maintaince"; // Assuming you have a hook to fetch rooms
-import { useBuildingStore } from "@/store/buildings";
+import { useGetRoomsForBuilding } from "../../../../../../../../store/server/maintaince"; // Assuming you have a hook to fetch rooms
+import { useBuildingStore } from "../../../../../../../../store/buildings";
 
 const formSchema = z.object({
   description: z.string().min(1, "Description is required"),
