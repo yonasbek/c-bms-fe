@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react'
-import { TenantSidebar } from "@/components/tenant-sidebar"
+import { TenantSidebar } from "../../../components/tenant-sidebar"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,12 +8,12 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+} from "../../../components/ui/breadcrumb"
+import { Separator } from "../../../components/ui/separator"
+import { SidebarProvider, SidebarTrigger } from "../../../components/ui/sidebar"
 import { useSession } from 'next-auth/react'
 import { useRouter, usePathname } from 'next/navigation'
-import { NotificationIcon } from "@/components/notification-icon"
+import { NotificationIcon } from "../../../components/notification-icon"
 import { redirect } from "next/navigation"
 
 const Layout = ({children}:{children:React.ReactNode}) => {

@@ -1,15 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../../../components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../components/ui/tabs"
+import { Badge } from "../../../../../components/ui/badge"
 import { Bell, Calendar, Info, Building } from "lucide-react"
 import { format } from "date-fns"
 import { useQuery } from "@tanstack/react-query"
 import { userRequest } from "@/lib/requests"
-import { Skeleton } from "@/components/ui/skeleton"
-import { useTenantBuilding } from "@/hooks/use-tenant-queries"
+import { Skeleton } from "../../../../../components/ui/skeleton"
+import { useTenantBuilding } from "../../../../../hooks/use-tenant-queries"
 
 interface Notification {
   id: number

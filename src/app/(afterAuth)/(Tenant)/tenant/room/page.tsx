@@ -1,9 +1,9 @@
 "use client"
 
-import { useTenantRoom } from "@/hooks/use-tenant-queries"
-import { useTenantStore } from "@/store/tenant"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
+import { useTenantRoom } from "../../../../../hooks/use-tenant-queries"
+import { useTenantStore } from "../../../../../store/tenant"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../../../components/ui/card"
+import { Skeleton } from "../../../../../components/ui/skeleton"
 import { Building, Home } from "lucide-react"
 
 export default function TenantRoomPage() {

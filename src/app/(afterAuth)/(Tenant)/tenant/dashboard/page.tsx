@@ -1,11 +1,11 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../../../../components/ui/card"
+import { Button } from "../../../../../components/ui/button"
+import { Badge } from "../../../../../components/ui/badge"
 import { useSession } from "next-auth/react"
 import { useQuery } from "@tanstack/react-query"
-import { userRequest } from "@/lib/requests"
+import { userRequest } from "../../../../../lib/requests"
 import { format } from "date-fns"
 import { 
   Home, 

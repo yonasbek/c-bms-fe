@@ -1,15 +1,15 @@
 "use client"
 
-import { useTenantContract, useTenantBuilding } from "@/hooks/use-tenant-queries"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { useTenantContract, useTenantBuilding } from "../../../../../hooks/use-tenant-queries"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../../../components/ui/card"
+import { Skeleton } from "../../../../../components/ui/skeleton"
+import { Badge } from "../../../../../components/ui/badge"
+import { Button } from "../../../../../components/ui/button"
 import { CalendarRange, DollarSign, FileText, Building } from "lucide-react"
 import { format } from "date-fns"
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-import { TenantContract } from "@/types/tenant"
+import { TenantContract } from "../../../../../types/tenant"
 
 export default function TenantContractPage() {
   const { data: session } = useSession();
