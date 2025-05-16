@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { MaintenanceList } from "@/app/(afterAuth)/(Dashboard)/building/[id]/components/(building-tabs)/(maintenance)/maintenance-list"
+import { MaintenanceList } from "../building/[id]/components/(building-tabs)/(maintenance)/maintenance-list"
 export const metadata: Metadata = {
   title: "Tenants Management",
   description: "Manage building tenants",
