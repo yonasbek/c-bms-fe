@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { TenantRoom, TenantContract, MaintenanceRequest, Building } from '@/types/tenant';
+import { TenantRoom, TenantContract, MaintenanceRequest, Building } from '../types/tenant';
 
 interface TenantStore {
   room: TenantRoom | null;

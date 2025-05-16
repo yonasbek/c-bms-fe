@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ContractType } from "@/types/contract"
+import { ContractType } from "../types/contract"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 

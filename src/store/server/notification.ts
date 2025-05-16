@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { userRequest } from "@/lib/requests";
-import { Notification } from "@/types/notification";
-import { useBuildingStore } from "@/store/buildings";
+import { userRequest } from "../../lib/requests";
+import { Notification } from "../../types/notification";
+import { useBuildingStore } from "../../store/buildings";
 
 interface CreateNotificationData {
   name: string;

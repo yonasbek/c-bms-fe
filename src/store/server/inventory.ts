@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { InventoryItem, CreateInventoryItemInput, CreateItem, Item } from "@/types/inventory";
-import { userRequest } from "@/lib/requests"; // Assuming you have a userRequest setup for API calls
+import { InventoryItem, CreateInventoryItemInput, CreateItem, Item } from "../../types/inventory";
+import { userRequest } from "../../lib/requests"; // Assuming you have a userRequest setup for API calls
 import { toast } from "sonner";
 
 

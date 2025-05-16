@@ -1,5 +1,5 @@
-import { auth } from '@/auth'
-import { User } from '@/types/user'
+import { auth } from '../auth'
+import { User } from '../types/user'
 import { create } from 'zustand'
 
 

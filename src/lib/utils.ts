@@ -1,4 +1,4 @@
-import PaymentType from "@/types/payment";
+import PaymentType from "../types/payment";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 

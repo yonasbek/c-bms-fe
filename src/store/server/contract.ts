@@ -1,12 +1,11 @@
-import { userRequest } from "@/lib/requests";
+import { userRequest } from "../../lib/requests";
 
 import { useMutation, useQuery, useQueryClient, useQueries } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
-import ContractType, { Contract, ContractWithDetails } from "@/types/contract";
-import { useGetPaymentsForContract } from "@/store/server/payment";
-import { isContractPaid } from "@/lib/utils";
-
+import ContractType, { Contract, ContractWithDetails } from "../../types/contract";
+import { isContractPaid } from "../../lib/utils";
+  
 // Get all contracts for a building
 export const useGetBuildingContracts = (buildingId: string) => {
   return useQuery({

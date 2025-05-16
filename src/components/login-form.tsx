@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
 import {
   Card,
@@ -11,7 +11,6 @@ import {
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import React, { useState } from "react";
-import { SignIn } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { signIn as nextAuthSignIn } from "next-auth/react";
 

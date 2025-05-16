@@ -1,4 +1,4 @@
-import { publicRequest, userRequest } from "@/lib/requests";
+import { publicRequest, userRequest } from "../lib/requests";
 import { AxiosError } from "axios";
 
 export async function login(username:string, password:string) {

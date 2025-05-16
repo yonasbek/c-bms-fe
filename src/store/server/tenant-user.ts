@@ -1,9 +1,9 @@
-import { userRequest } from "@/lib/requests";
-import { BuildingUserType } from "@/types/user";
+import { userRequest } from "../../lib/requests";
+import { BuildingUserType } from "../../types/user";
 import { useQuery, useMutation, useQueryClient, useQueries } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useBuildingStore } from "../buildings";
-import ContractType from "@/types/contract";
+import ContractType from "../../types/contract";
 import { AxiosError } from "axios";
 
 

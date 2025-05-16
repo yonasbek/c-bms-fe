@@ -1,9 +1,9 @@
 // export const useCreateFloor = () => {
 //     const queryClient = useQueryClient();
 
-import { userRequest } from "@/lib/requests";
-import { RoomType } from "@/types/room";
-import { FloorType } from "@/types/floor";
+import { userRequest } from "../../lib/requests";
+import { RoomType } from "../../types/room";
+import { FloorType } from "../../types/floor";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 

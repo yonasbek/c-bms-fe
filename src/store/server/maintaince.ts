@@ -1,10 +1,9 @@
 //mutiate floor create 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { userRequest } from "@/lib/requests";
+import { userRequest } from "../../lib/requests";
 import { toast } from "sonner";
-// import { FloorType, FloorWithRooms } from "@/types/floor";
-import { MaintenanceType } from "@/types/maintainance";
-import { RoomType } from "@/types/room";
+import { MaintenanceType } from "../../types/maintainance";
+import { RoomType } from "../../types/room";
 
 
 interface CreateMaintenanceData {

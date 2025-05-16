@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { Dialog } from "./ui/dialog";
-import { useModalStore } from "@/store/modal";
+import { useModalStore } from "../store/modal";
 import CreateBuildingModal from "../app/(afterAuth)/(Dashboard)/building/create-building-modal";
 import { useQueryClient } from "@tanstack/react-query";
 

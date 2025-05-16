@@ -1,5 +1,5 @@
 // store/buildings.ts
-import { Building } from '@/types/building';
+import { Building } from '../types/building';
 import { nanoid } from 'nanoid';
 import { create } from 'zustand';
 

@@ -1,9 +1,9 @@
 //mutiate floor create 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { userRequest } from "@/lib/requests";
+import { userRequest } from "../../lib/requests";
 import { toast } from "sonner";
-import { CreateSubContractType, SubContractType } from "@/types/subContract";
-import { Building } from "@/types/building";
+import { CreateSubContractType, SubContractType } from "../../types/subContract";
+import { Building } from "../../types/building";
 
 
 export const useCreateSubContract = () => {

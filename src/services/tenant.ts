@@ -1,5 +1,5 @@
-import { userRequest } from "@/lib/requests";
-import { MaintenanceRequest, TenantContract, TenantRoom, Building, Notification } from "@/types/tenant";
+import { userRequest } from "../lib/requests";
+import { MaintenanceRequest, TenantContract, TenantRoom, Building, Notification } from "../types/tenant";
 
 export const getTenantRoom = async (): Promise<TenantRoom> => {
   console.log("[Tenant API] Fetching tenant room data");

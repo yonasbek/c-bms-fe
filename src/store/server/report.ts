@@ -1,7 +1,7 @@
 //mutiate floor create 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { userRequest } from "@/lib/requests";
-import { MaintenanceType } from "@/types/maintainance";
+import { userRequest } from "../../lib/requests";
+import { MaintenanceType } from "../../types/maintainance";
 
 
 

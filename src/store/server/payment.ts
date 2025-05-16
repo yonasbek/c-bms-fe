@@ -1,8 +1,8 @@
-import { userRequest } from "@/lib/requests";
+import { userRequest } from "../../lib/requests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
-import PaymentType from "@/types/payment";
+import PaymentType from "../../types/payment";
 
 interface CreatePaymentData {
   reference_number: string;

@@ -1,5 +1,5 @@
-import { userRequest } from "@/lib/requests";
-import { Building } from "@/types/building";
+import { userRequest } from "../../lib/requests";
+import { Building } from "../../types/building";
 import { useQuery } from "@tanstack/react-query";
 
 const getBuildingInfo = async (buildingID: string) => {
