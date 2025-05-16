@@ -1,9 +1,9 @@
 'use client'
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { useRoomStore } from '@/store/rooms';
+import { Button } from '../../../../components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../../../components/ui/dialog';
+import { Input } from '../../../../components/ui/input';
+import { useRoomStore } from '../../../../store/rooms';
 
 const RoomsView = () => {
   // Access room store

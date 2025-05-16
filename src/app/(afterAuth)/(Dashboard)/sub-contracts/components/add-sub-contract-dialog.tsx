@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../../../../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,18 +10,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
+} from "../../../../../components/ui/dialog"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../../../../components/ui/form"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../components/ui/select"
+import { Input } from "../../../../../components/ui/input"
+import { Checkbox } from "../../../../../components/ui/checkbox"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { useCreateSubContract } from "@/store/server/subContract"
+import { useCreateSubContract } from "../../../../../store/server/subContract"
 import { toast } from "sonner"
-import { useBuildingStore } from "@/store/buildings"
-import { ServiceType } from "@/types/subContract"
+import { useBuildingStore } from "../../../../../store/buildings"
+import { ServiceType } from "../../../../../types/subContract"
 const days = [
   { id: "monday", label: "Monday" },
   { id: "tuesday", label: "Tuesday" },

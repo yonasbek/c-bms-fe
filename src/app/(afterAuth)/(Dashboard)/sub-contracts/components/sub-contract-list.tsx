@@ -1,18 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
+import { Badge } from "../../../../../components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../../../components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../components/ui/select"
+import { Input } from "../../../../../components/ui/input"
 import { Search, Building2, Calendar, DollarSign, Users } from "lucide-react"
 import { AddSubContractDialog } from "./add-sub-contract-dialog"
 import { ViewSubContractDialog } from "./view-sub-contract"
-import { ServiceType, SubContractType } from "@/types/subContract"
-import { ContractStatus } from "@/types/subContract"
-import { useGetAllSubContractForBuilding } from "@/store/server/subContract"
-import { useBuildingStore } from "@/store/buildings"
-import GlobalLoading from "@/components/global-loading"
+import { ServiceType, SubContractType } from "../../../../../types/subContract"
+import { ContractStatus } from "../../../../../types/subContract"
+import { useGetAllSubContractForBuilding } from "../../../../../store/server/subContract"
+import { useBuildingStore } from "../../../../../store/buildings"
+import GlobalLoading from "../../../../../components/global-loading"
 
 
 

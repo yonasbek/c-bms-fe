@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Building2, ChevronsUpDown, Plus } from "lucide-react"
-import type { Building as BuildingType } from "@/types/building"
+import type { Building as BuildingType } from "../types/building"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
@@ -13,15 +13,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "../components/ui/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { useBuildingStore } from "@/store/buildings"
-import { useModalStore } from "@/store/modal"
+} from "../components/ui/sidebar"
+import { useBuildingStore } from "../store/buildings"
+import { useModalStore } from "../store/modal"
 
 interface BuildingSwitcherProps {
   buildings: BuildingType[];

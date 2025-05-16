@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 // import  Geist_Sans, {MONO}  from "next/font/google";
 import "./globals.css";
-import CustomModal from "@/components/custom-modal";
+import CustomModal from "../components/custom-modal";
 import { Toaster } from 'sonner';
 import Providers from "./providers";
 

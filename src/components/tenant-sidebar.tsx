@@ -1,15 +1,15 @@
 "use client"
 
 import { Building2, ClipboardList, Wrench } from "lucide-react"
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "./nav-main"
+import { NavUser } from "./nav-user"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "./ui/sidebar"
 import { useSession } from "next-auth/react"
 
 const items = [

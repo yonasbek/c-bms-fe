@@ -3,18 +3,18 @@
 import * as React from "react"
 import { Building2, ClipboardList, Home, Users, Wrench, Box, Shield, Bell, UserCircle } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
-import { BuildingSwitcher} from "@/components/building-switcher"
+import { NavMain } from "../components/nav-main"
+import { NavUser } from "../components/nav-user"
+import { BuildingSwitcher} from "../components/building-switcher"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { useGetBuildings } from "@/store/server/buildings"
-import { useBuildingStore } from "@/store/buildings"
+} from "../components/ui/sidebar"
+import { useGetBuildings } from "../store/server/buildings"
+import { useBuildingStore } from "../store/buildings"
 import { useSession } from "next-auth/react"
 
 // This is sample data.

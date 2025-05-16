@@ -1,14 +1,14 @@
 "use client"
 
 import { Bell } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "./ui/button"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { useTenantNotifications } from "@/hooks/use-tenant-queries"
+} from "./ui/popover"
+import { ScrollArea } from "./ui/scroll-area"
+import { useTenantNotifications } from "../hooks/use-tenant-queries"
 import { format } from "date-fns"
 import { Badge } from "./ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
