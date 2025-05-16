@@ -7,7 +7,7 @@ import { Badge } from "../../../../../components/ui/badge"
 import { Bell, Calendar, Info, Building } from "lucide-react"
 import { format } from "date-fns"
 import { useQuery } from "@tanstack/react-query"
-import { userRequest } from "@/lib/requests"
+import { userRequest } from "../../../../../lib/requests"
 import { Skeleton } from "../../../../../components/ui/skeleton"
 import { useTenantBuilding } from "../../../../../hooks/use-tenant-queries"
 

@@ -171,11 +171,11 @@
 
 
 'use client'
-import GlobalLoading from "@/components/global-loading";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useBuildingStore } from "@/store/buildings";
-import { useGetFloorsForBuilding } from "@/store/server/floor";
-import { getReportForBuilding } from "@/store/server/report";
+import GlobalLoading from "../../../components/global-loading";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
+import { useBuildingStore } from "../../../store/buildings";
+import { useGetFloorsForBuilding } from "../../../store/server/floor";
+import { getReportForBuilding } from "../../../store/server/report";
 import { Building2, Users, Home, AlertCircle } from "lucide-react"
 
 export default function Page() {
